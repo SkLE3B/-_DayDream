@@ -1,0 +1,4 @@
+C:\K019G1491\自作エンジン\Myengine Directx12 Texture\DirectXTex\Bin\Desktop_2019_Win10\Win32\Debug\DirectXTex.lib
+C:\K019G1491\自作エンジン\Myengine Directx12 Texture - コピー\DirectXTex\Bin\Desktop_2019_Win10\Win32\Debug\DirectXTex.lib
+C:\K019G1491\自作エンジン\Myengine Directx12 Audio - コピー\DirectXTex\Bin\Desktop_2019_Win10\Win32\Debug\DirectXTex.lib
+C:\K019G1491\自作エンジン\Myengine Directx12 Audio\DirectXTex\Bin\Desktop_2019_Win10\Win32\Debug\DirectXTex.lib

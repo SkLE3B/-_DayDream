@@ -1,0 +1,9 @@
+C:\K019G1491\自作エンジン\mylibrary camera\DirectXTex\Bin\Desktop_2019_Win10\x64\Release\DirectXTex.lib
+C:\K019G1491\自作エンジン\mylibrary - コピー\DirectXTex\Bin\Desktop_2019_Win10\x64\Release\DirectXTex.lib
+C:\K019G1491\自作エンジン\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Release\DirectXTex.lib
+C:\K019G1491\自作エンジン\mylibrary - コピー (2)\DirectXTex\Bin\Desktop_2019_Win10\x64\Release\DirectXTex.lib
+C:\K019G1491\myengine\MyEngine 01_16\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Release\DirectXTex.lib
+D:\3kouki\myengine\MyEngine 01_24\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Release\DirectXTex.lib
+D:\3kouki\MyEngine 01_24\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Release\DirectXTex.lib
+D:\3kouki\MyEngine 01_24 - コピー\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Release\DirectXTex.lib
+D:\3kouki\myengine\MyEngine 05_07\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Release\DirectXTex.lib

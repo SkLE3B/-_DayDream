@@ -1,0 +1,30 @@
+C:\K019G1491\自作エンジン\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+C:\K019G1491\自作エンジン\mylibrary debugText\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+C:\K019G1491\自作エンジン\mylibrary geometorymodel\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+C:\K019G1491\自作エンジン\mylibrary geometorymodel - コピー\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+C:\K019G1491\自作エンジン\mylibrary flamework\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+C:\K019G1491\自作エンジン\mylibrary camera\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+C:\K019G1491\自作エンジン\mylibrary - コピー\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+C:\K019G1491\自作エンジン\mylibrary - コピー (2)\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+C:\Users\K019G1491\Desktop\mylibrary - コピー\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+C:\K019G1491\自作エンジン - コピー\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+C:\K019G1491\MyEngine\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+C:\K019G1491\MyEngine - コピー\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+C:\K019G1491\自作エンジン\MyEngine - コピー\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+C:\K019G1491\自作エンジン\MyEngine - コピー - コピー\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+C:\K019G1491\myengine\MyEngine - コピー\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+C:\K019G1491\myengine\MyEngine - コピー - コピー\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+C:\K019G1491\myengine\MyEngine\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+C:\K019G1491\myengine\MyEngine - コピ- - コピー\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+C:\K019G1491\myengine\MyEngine - コピ- - コピー - コピー\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+C:\K019G1491\myengine\MyEngine - コピ- - コピー - コピー - コピー (2)\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+C:\K019G1491\myengine\MyEngine 11_25\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+C:\K019G1491\myengine\MyEngine 11_26\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+C:\K019G1491\myengine\MyEngine 12_02\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+C:\K019G1491\myengine\MyEngine 12_14.1\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+C:\K019G1491\myengine\MyEngine 12_14.1 - コピー\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+C:\K019G1491\myengine\MyEngine 01_16\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+C:\K019G1491\myengine\MyEngine 01_24\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+D:\3kouki\myengine\MyEngine 01_24\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+D:\3kouki\MyEngine 01_24\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
+D:\3kouki\MyEngine 01_24 - コピー\mylibrary\DirectXTex\Bin\Desktop_2019_Win10\x64\Debug\DirectXTex.lib
