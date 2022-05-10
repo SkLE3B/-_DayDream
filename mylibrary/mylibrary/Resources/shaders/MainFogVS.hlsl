@@ -1,0 +1,11 @@
+#include "MainFog.hlsli"
+
+VSOutput main(float4 pos : POSITION,float2 uv : TEXCOORD)
+{
+	VSOutput output; // ピクセルシェーダーに渡す値
+	output.svpos = pos;
+	output.uv.xy = uv;
+	pos = mul(viewproj, pos);
+
+	return output;
+}
