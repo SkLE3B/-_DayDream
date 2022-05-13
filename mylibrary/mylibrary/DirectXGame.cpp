@@ -59,11 +59,6 @@ void DirectXGame::Draw()
 		SceneManager::GetInstance()->Draw();
 		SceneManager::GetInstance()->FogDraw();
 		testfog->PostDrawScene(dxBase->GetCommandList());
-
-		//if (SceneManager::GetInstance()->GetSceneChengeFlag())
-		//{
-		//	testfog->ChengeFadeOutFlag();
-		//}
 	}
 
 	if (SceneManager::GetInstance()->GetSceneState() == Scene::Game)

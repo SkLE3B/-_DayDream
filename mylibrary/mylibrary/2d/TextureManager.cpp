@@ -1,5 +1,4 @@
 #include "TextureManager.h"
-
 #include<cassert>
 
 using namespace DirectX;

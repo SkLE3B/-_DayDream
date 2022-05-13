@@ -2,6 +2,7 @@
 #include "BaseScene.h"
 #include <DirectXMath.h>
 #include "../base/SafeDelete.h"
+#include "../3d/EffekseerManager.h"
 
 class CollisionManager;
 class Player;
@@ -99,6 +100,8 @@ private:
 
 	std::shared_ptr<AttackCollisionObject> objectAttack;
 	std::shared_ptr<AttackEnemyCollisionObject> objectEAttack;
+
+	Effekseer::Handle handle;
 
 	//オブジェクト<OBJ>
 	ObjLoder* modelcube = nullptr;

@@ -49,6 +49,9 @@ void EffekseerManager::Initialize(Direcx12Base* dxBase, Camera* camera)
 	renderer->SetProjectionMatrix(
 		Effekseer::Matrix44().PerspectiveFovLH(DirectX::XMConvertToRadians(60.0f), (float)1280 / (float)720, 0.1f, 1000.0f));
 
+
+	camera->SetTarget({ 0,1,0 });
+
 	time = 0;
 	handle = 0;
 

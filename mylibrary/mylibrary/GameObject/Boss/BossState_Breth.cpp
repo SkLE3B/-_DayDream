@@ -43,7 +43,7 @@ void BossState_Breth::Breth(Player* player, AttackEnemyCollisionObject* ememyCol
 	if (timerFlag && step == BrethStep::DuringBreth)
 	{
 		AdvanceTimer(maxTime);
-		
+					
 		if (IsTimeOut(totalTime, 10.0f))
 		{
 			ResetTimer();
@@ -56,17 +56,20 @@ void BossState_Breth::Breth(Player* player, AttackEnemyCollisionObject* ememyCol
 	
 	if (timerFlag && step == BrethStep::BrethEnd)
 	{
-		Ppos = player->GetPosition();
 		warldMat = weak_boss.lock()->GetMatWorld();
 		AdvanceTimer(maxTime);
 	
 		bai += 5.5f;
-		
 		walrdPos = warldMat.transformNormal(forwardVector, warldMat);
 		walrdPos = { walrdPos.x * (bai + 10), 2 ,walrdPos.z * (bai + 10) };
-	
 		PositionCorrection(ememyCollision, walrdPos);
-	
+		handle = EffekseerManager::PlayEffect(u"Resources/Effects/Bite.efk", { weak_boss.lock()->GetPosition().x + walrdPos.x, weak_boss.lock()->GetPosition().y + walrdPos.y, weak_boss.lock()->GetPosition().z + walrdPos.z });
+		
+		if (IsTimeOut(totalTime, 0.01f))
+		{
+			handle = EffekseerManager::StopEffect(handle);
+		}
+
 		if (IsTimeOut(totalTime, 15.0f))
 		{
 			ResetTimer();

@@ -1,5 +1,6 @@
 #pragma once
 #include "BossBaseState.h"
+#include "../mylibrary/3d/EffekseerManager.h"
 
 enum class RoarStep
 {
@@ -27,5 +28,6 @@ public:
 private:
 	RoarStep step;
 	float dotPos;//“àÏƒxƒNƒgƒ‹
+	Effekseer::Handle handle;
 };
 

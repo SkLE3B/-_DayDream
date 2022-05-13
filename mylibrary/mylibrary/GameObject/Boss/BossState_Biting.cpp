@@ -54,15 +54,21 @@ void BossState_Biting::Biting(Player* player, AttackEnemyCollisionObject* ememyC
 	}
 
 	if (timerFlag && step == BiteStep::BiteEnd)
-	{
+	{		
 		warldMat = weak_boss.lock()->GetMatWorld();
 		AdvanceTimer(maxTime);
-		bai += 0.5f;
 
-		Vector3 walrdPos = warldMat.transformNormal(forwardVector, warldMat);
-		walrdPos = { walrdPos.x * bai, 2 ,walrdPos.z * bai };
-
+		bai += 2.5f;
+		walrdPos = warldMat.transformNormal(forwardVector, warldMat);
+		walrdPos = { walrdPos.x * (bai + 10), 2 ,walrdPos.z * (bai + 10) };
 		PositionCorrection(ememyCollision, walrdPos);
+		handle = EffekseerManager::PlayEffect(u"Resources/Effects/scroll.efk", { weak_boss.lock()->GetPosition().x + walrdPos.x, weak_boss.lock()->GetPosition().y + walrdPos.y, weak_boss.lock()->GetPosition().z + walrdPos.z });
+		EffekseerManager::SetScale(handle, { 3,3,3 });
+
+		if (IsTimeOut(totalTime, 0.0001f))
+		{
+			handle = EffekseerManager::StopEffect(handle);
+		}
 
 		if (IsTimeOut(totalTime, 10.0f))
 		{

@@ -3,7 +3,6 @@
 #include<d3d12.h>
 #include<string>
 #include<windows.h>
-
 #include "Sprite.h"
 
 //デバッグ文字列クラスの定義

@@ -402,7 +402,7 @@ void Player::DrillRush(AttackCollisionObject* AttackCol, AudioManager* audio)
 		audio->PlayWave(L"Resources/sounds/Drill.wav");
 		DecisionDistance(moveDirection * 60);
 		ActionState = ATTACK2;
-		EffekseerManager::SetScale(handle,{5,5,5});
+		handle = EffekseerManager::PlayEffect(u"Resources/Effects/movePlayer.efk", { GetPosition().x, GetPosition().y + 5, GetPosition().z });
 	}
 
 	if (timerFlag && ActionState == ATTACK2)
@@ -416,6 +416,7 @@ void Player::DrillRush(AttackCollisionObject* AttackCol, AudioManager* audio)
 
 		if (IsEasingOver())
 		{
+			handle = EffekseerManager::StopEffect(handle);
 			ResetTimer();
 			ResetAnimation();
 			PlayAnimation(0, 0);

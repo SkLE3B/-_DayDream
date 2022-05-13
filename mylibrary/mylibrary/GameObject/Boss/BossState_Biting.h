@@ -1,5 +1,7 @@
 #pragma once
 #include "BossBaseState.h"
+#include "../mylibrary/3d/EffekseerManager.h"
+
 
 enum class BiteStep
 {
@@ -23,4 +25,5 @@ public:
 	void Biting(Player* player, AttackEnemyCollisionObject* ememyCollision, AudioManager* audio);
 private:
 	BiteStep step;
+	Effekseer::Handle handle;
 };
