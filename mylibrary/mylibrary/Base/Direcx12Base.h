@@ -1,11 +1,12 @@
 #pragma once
-#include"windowsApi.h"
+
 #include<dxgi1_6.h>
 #include<vector>
 #include<d3d12.h>
 #include<d3dx12.h>
-#include<wrl.h>
 #include <imgui.h>
+#include<wrl.h>
+#include"windowsApi.h"
 
 class Direcx12Base
 {

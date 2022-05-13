@@ -1,5 +1,6 @@
 #pragma once
 #include "BossBaseState.h"
+#include "../mylibrary/3d/EffekseerManager.h"
 
 enum class BrethStep
 {
@@ -25,5 +26,6 @@ public:
 	void Breth(Player* player, AttackEnemyCollisionObject* ememyCollision, AudioManager* audio);
 private:
 	BrethStep step;
+	Effekseer::Handle handle;
 };
 

@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ProjectOutputs>
+    <ProjectOutput>
+      <FullPath>D:\就職作品\mylibrary\x64\Debug\mylibrary.exe</FullPath>
+    </ProjectOutput>
+  </ProjectOutputs>
+  <ContentFiles>
+    <ContentFile>
+      <FullPath>D:\就職作品\mylibrary\x64\Debug\BasicPixelShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\就職作品\mylibrary\x64\Debug\BasicVertexShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\就職作品\mylibrary\x64\Debug\FBXPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\就職作品\mylibrary\x64\Debug\FBXVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\就職作品\mylibrary\x64\Debug\MainFogPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\就職作品\mylibrary\x64\Debug\MainFogVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\就職作品\mylibrary\x64\Debug\OBJPixelShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\就職作品\mylibrary\x64\Debug\OBJVertexShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\就職作品\mylibrary\x64\Debug\ParticleGS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\就職作品\mylibrary\x64\Debug\ParticlePS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\就職作品\mylibrary\x64\Debug\ParticleVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\就職作品\mylibrary\x64\Debug\PosteffectPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\就職作品\mylibrary\x64\Debug\PosteffectVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\就職作品\mylibrary\x64\Debug\SpritePixelShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\就職作品\mylibrary\x64\Debug\SpriteVertexShader.cso</FullPath>
+    </ContentFile>
+  </ContentFiles>
+  <SatelliteDlls />
+  <NonRecipeFileRefs />
+</Project>

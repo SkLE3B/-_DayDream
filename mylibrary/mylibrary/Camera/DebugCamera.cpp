@@ -32,22 +32,22 @@ void DebugCamera::Update()
 	Input::MouseMove mouseMove = input->GetMouseMove();
 
 	 //マウスの左ボタンが押されていたらカメラを回転させる
-	if (input->PushMouseLeft())
-	{
-		phi += XM_PI / 180.0f * mouseMove.lX / 7;
-		theta += XM_PI / 180.0f * mouseMove.lY / 7;
-		if (theta > 40 * XM_PI / 180.0f)
-			theta = 40 * XM_PI / 180.0f;
-		else if (theta < -40 * XM_PI / 180.0f)
-			theta = -40 * XM_PI / 180.0f;
+	//if (input->PushMouseLeft())
+	//{
+	//	phi += XM_PI / 180.0f * mouseMove.lX / 7;
+	//	theta += XM_PI / 180.0f * mouseMove.lY / 7;
+	//	if (theta > 40 * XM_PI / 180.0f)
+	//		theta = 40 * XM_PI / 180.0f;
+	//	else if (theta < -40 * XM_PI / 180.0f)
+	//		theta = -40 * XM_PI / 180.0f;
 
-		if (phi > 360 * XM_PI / 180.0f)
-			phi -= 360 * XM_PI / 180.0f;
-		else if (phi < 0)
-			phi += 360 * XM_PI / 180.0f;
+	//	if (phi > 360 * XM_PI / 180.0f)
+	//		phi -= 360 * XM_PI / 180.0f;
+	//	else if (phi < 0)
+	//		phi += 360 * XM_PI / 180.0f;
 
-		dirty = true;
-	}
+	//	dirty = true;
+	//}
 
 	//if (input->IsPush(DIK_UP))
 	//{
@@ -91,11 +91,11 @@ void DebugCamera::Update()
 	}
 
 	 //ホイール入力で距離を変更
-	if (mouseMove.lZ != 0) {
-		distance -= mouseMove.lZ / 100.0f;
-		distance = max(distance, 1.0f);
-		dirty = true;
-	}
+	//if (mouseMove.lZ != 0) {
+	//	distance -= mouseMove.lZ / 100.0f;
+	//	distance = max(distance, 1.0f);
+	//	dirty = true;
+	//}
 
 	if (dirty || viewDirty) {
 		float nowTheta = theta;

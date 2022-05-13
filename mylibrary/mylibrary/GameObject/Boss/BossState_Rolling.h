@@ -1,5 +1,6 @@
 #pragma once
 #include "BossBaseState.h"
+#include "../mylibrary/3d/EffekseerManager.h"
 
 enum class RollingStep
 {
@@ -26,5 +27,6 @@ public:
 	void Rolling();
 private:
 	RollingStep step;
+	Effekseer::Handle handle;
 };
 

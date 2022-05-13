@@ -6,7 +6,6 @@
 #include "../math/Vector3.h"
 #include "../Camera/Camera.h"
 #include "../Camera/DebugCamera.h"
-#include "../Input/Input.h"
 
 class EffekseerManager
 {
@@ -69,6 +68,12 @@ public:
     /// <param name="arg_handle"></param>
     /// <param name="arg_scale"></param>
 	static void SetRotation(const Effekseer::Handle& arg_handle, const Vector3& arg_rotation);
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="camera"></param>
+	static void MoveCamera(Camera* camera);
 
 private://静的メンバ変数
 //画面クリアカラー

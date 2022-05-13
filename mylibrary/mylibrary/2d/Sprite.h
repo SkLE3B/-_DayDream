@@ -1,6 +1,5 @@
 #pragma once
 #include<d3d12.h>
-#include<d3dx12.h>
 #include<wrl.h>
 #include<DirectxMath.h>
 #include"TextureManager.h"
@@ -202,12 +201,38 @@ public://メンバ関数
 
 	std::string getSwich(const std::string& swich) { return swich; }
 
+	/// <summary>
+	/// 最小値なら
+	/// </summary>
+	/// <returns></returns>
 	bool isMin() {
 		return getAlpha() <= 0.0f;
 	}
 
+	/// <summary>
+	/// 最大値なら
+	/// </summary>
+	/// <returns></returns>
 	bool isMax() {
 		return getAlpha() >= 1.0f;
+	}
+
+	/// <summary>
+	/// アルファ以下なら
+	/// </summary>
+	/// <param name="alpha">アルファ値</param>
+	/// <returns></returns>
+	bool Lessthan(const float alpha) {
+		return  getAlpha() <= alpha;
+	}
+
+	/// <summary>
+	/// アルファ以上なら
+	/// </summary>
+	/// <param name="alpha">アルファ値</param>
+	/// <returns></returns>
+	bool Morethan(const float alpha) {
+		return  getAlpha() >= alpha;
 	}
 
 protected://メンバ変数

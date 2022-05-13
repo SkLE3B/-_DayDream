@@ -187,6 +187,8 @@ void GameScene::Update()
 
 	if (playerHp == 0)
 	{
+		EffekseerManager::SetScale(handle, { 5,5,5 });
+		handle = EffekseerManager::PlayEffect(u"Resources/Effects/Pdead.efk", { object_Player->GetPosition().x, object_Player->GetPosition().y, object_Player->GetPosition().z });
 		GotoEndScene(playerHp, 1);
 	}
 	if (bossHp == 0)
@@ -366,6 +368,12 @@ void GameScene::GotoEndScene(float Hp,int dead)
 	if (!object_Player->GetLifeFlag())
 	{
 		timer++;
+	
+		if (timer >= 10)
+		{
+			handle = EffekseerManager::StopEffect(handle);
+		}
+
 		//フェードアウト開始
 		if (timer >= 200)
 		{

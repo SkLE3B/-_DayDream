@@ -84,7 +84,7 @@ void AttackCollisionObject::Update(Player* player, ParticleManager* particleMan,
 		HP->add(-0.5f);
 		soundFlag = !soundFlag;
 		CreateParticles(particleMan);
-		handle = EffekseerManager::PlayEffect(u"Resources/Effects/hit.efk", { GetPosition().x, GetPosition().y,GetPosition().z });
+		handle = EffekseerManager::PlayEffect(u"Resources/Effects/hit.efk", { GetPosition().x, GetPosition().y,GetPosition().z + 5});
 		EffekseerManager::SetScale(handle,{3,3,3});
 	}
 
