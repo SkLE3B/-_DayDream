@@ -48,16 +48,14 @@ void BossState_Roar::Roar(Player* player, AudioManager* audio)
 
 		if (IsTimeOut(totalTime, 5.5f))
 		{
-			bai += 5.0f;
+			bai += 15.0f;
 			warldMat = weak_boss.lock()->GetMatWorld();
 			walrdPos = warldMat.transformNormal(forwardVector, warldMat);
 			walrdPos.Normalize();
 
 			walrdPos2 = warldMat.transformNormal(forwardVector, warldMat);
-			walrdPos2.Normalize();
 			walrdPos2 = { walrdPos2.x * (bai + 10), 2,walrdPos2.z * (bai + 10) };
 
-			
 			EffekseerManager::SetPosition(handle, weak_boss.lock()->GetPosition() + walrdPos2);
 			handle = EffekseerManager::PlayEffect(u"Resources/Effects/Ban.efk", { weak_boss.lock()->GetPosition().x + walrdPos2.x, weak_boss.lock()->GetPosition().y + walrdPos2.y, weak_boss.lock()->GetPosition().z + walrdPos2.z });
 			EffekseerManager::SetScale(handle, { 2,2,2 });

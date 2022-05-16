@@ -1,3 +1,64 @@
-﻿  BossState_Roar.cpp
+﻿D:\�A�E��i\mylibrary\mylibrary\Resources\shaders\MainFogPS.hlsl(60,9-42): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see D:\就職作品\mylibrary\x64\Debug\MainFogPS.cso
+  DebugText.cpp
+D:\就職作品\mylibrary\mylibrary\2d\DebugText.cpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  Sprite.cpp
+D:\就職作品\mylibrary\mylibrary\2d\Sprite.cpp(395,13): warning C4566: ユニバーサル文字名 '\u00A5' によって表示されている文字は、現在のコード ページ (932) で表示できません
+  FlameRate.cpp
+  DebugCamera.cpp
 D:\就職作品\mylibrary\mylibrary\GameObject\Boss\BossBaseState.h(134,37): warning C4244: '初期化中': 'float' から 'const unsigned int' への変換です。データが失われる可能性があります。
+  DirectXGame.cpp
+D:\就職作品\mylibrary\mylibrary\DirectXGame.cpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+D:\就職作品\mylibrary\mylibrary\GameObject\Boss\BossBaseState.h(134,37): warning C4244: '初期化中': 'float' から 'const unsigned int' への変換です。データが失われる可能性があります。
+  GameBase.cpp
+D:\就職作品\mylibrary\mylibrary\GameObject\Boss\BossBaseState.h(134,37): warning C4244: '初期化中': 'float' から 'const unsigned int' への変換です。データが失われる可能性があります。
+  Boss.cpp
+D:\就職作品\mylibrary\mylibrary\GameObject\Boss\BossBaseState.h(134,37): warning C4244: '初期化中': 'float' から 'const unsigned int' への変換です。データが失われる可能性があります。
+  BossBaseState.cpp
+D:\就職作品\mylibrary\mylibrary\GameObject\Boss\BossBaseState.h(134,37): warning C4244: '初期化中': 'float' から 'const unsigned int' への変換です。データが失われる可能性があります。
+D:\就職作品\mylibrary\mylibrary\GameObject\Boss\BossBaseState.cpp(72,28): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+  BossState_Biting.cpp
+D:\就職作品\mylibrary\mylibrary\GameObject\Boss\BossBaseState.h(134,37): warning C4244: '初期化中': 'float' から 'const unsigned int' への変換です。データが失われる可能性があります。
+D:\就職作品\mylibrary\mylibrary\GameObject\Boss\BossState_Biting.cpp(6,19): warning C4353: 非標準の拡張機能が使用: 関数式として定数 0 が使用されています。本来の '__noop' 関数を使用してください
+  BossState_Breth.cpp
+D:\就職作品\mylibrary\mylibrary\GameObject\Boss\BossBaseState.h(134,37): warning C4244: '初期化中': 'float' から 'const unsigned int' への変換です。データが失われる可能性があります。
+D:\就職作品\mylibrary\mylibrary\GameObject\Boss\BossState_Breth.cpp(7,20): warning C4353: 非標準の拡張機能が使用: 関数式として定数 0 が使用されています。本来の '__noop' 関数を使用してください
+  BossState_Roar.cpp
+D:\就職作品\mylibrary\mylibrary\GameObject\Boss\BossBaseState.h(134,37): warning C4244: '初期化中': 'float' から 'const unsigned int' への変換です。データが失われる可能性があります。
+  Player.cpp
+D:\就職作品\mylibrary\mylibrary\GameObject\Boss\BossBaseState.h(134,37): warning C4244: '初期化中': 'float' から 'const unsigned int' への変換です。データが失われる可能性があります。
+D:\就職作品\mylibrary\mylibrary\Player.cpp(453,29): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+  Fog.cpp
+D:\就職作品\mylibrary\mylibrary\GameObject\Boss\BossBaseState.h(134,37): warning C4244: '初期化中': 'float' から 'const unsigned int' への変換です。データが失われる可能性があります。
+D:\就職作品\mylibrary\mylibrary\PostEffect\Fog.cpp(401,84): warning C4244: '引数': 'float' から 'UINT8' への変換です。データが失われる可能性があります。
+  PostEffect.cpp
+D:\就職作品\mylibrary\mylibrary\GameObject\Boss\BossBaseState.h(134,37): warning C4244: '初期化中': 'float' から 'const unsigned int' への変換です。データが失われる可能性があります。
+D:\就職作品\mylibrary\mylibrary\PostEffect\PostEffect.cpp(396,84): warning C4244: '引数': 'float' から 'UINT8' への変換です。データが失われる可能性があります。
+  AbstractSceneFactory.cpp
+D:\就職作品\mylibrary\mylibrary\GameObject\Boss\BossBaseState.h(134,37): warning C4244: '初期化中': 'float' から 'const unsigned int' への変換です。データが失われる可能性があります。
+  BaseScene.cpp
+D:\就職作品\mylibrary\mylibrary\GameObject\Boss\BossBaseState.h(134,37): warning C4244: '初期化中': 'float' から 'const unsigned int' への変換です。データが失われる可能性があります。
+  EndScene.cpp
+D:\就職作品\mylibrary\mylibrary\GameObject\Boss\BossBaseState.h(134,37): warning C4244: '初期化中': 'float' から 'const unsigned int' への変換です。データが失われる可能性があります。
+  GameScene.cpp
+D:\就職作品\mylibrary\mylibrary\GameObject\Boss\BossBaseState.h(134,37): warning C4244: '初期化中': 'float' から 'const unsigned int' への変換です。データが失われる可能性があります。
+D:\就職作品\mylibrary\mylibrary\Scene\GameScene.cpp(183,13): warning C4244: '初期化中': 'float' から 'int' への変換です。データが失われる可能性があります。
+D:\就職作品\mylibrary\mylibrary\Scene\GameScene.cpp(184,15): warning C4244: '初期化中': 'float' から 'int' への変換です。データが失われる可能性があります。
+D:\就職作品\mylibrary\mylibrary\Scene\GameScene.cpp(185,24): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+D:\就職作品\mylibrary\mylibrary\Scene\GameScene.cpp(186,19): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+D:\就職作品\mylibrary\mylibrary\Scene\GameScene.cpp(192,16): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+D:\就職作品\mylibrary\mylibrary\Scene\GameScene.cpp(196,16): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+  SceneFactory.cpp
+D:\就職作品\mylibrary\mylibrary\GameObject\Boss\BossBaseState.h(134,37): warning C4244: '初期化中': 'float' から 'const unsigned int' への変換です。データが失われる可能性があります。
+  SceneManager.cpp
+D:\就職作品\mylibrary\mylibrary\GameObject\Boss\BossBaseState.h(134,37): warning C4244: '初期化中': 'float' から 'const unsigned int' への変換です。データが失われる可能性があります。
+  コードを生成中...
+D:\就職作品\mylibrary\mylibrary\Scene\SceneManager.cpp(57): warning C4172: ローカル変数またはテンポラリのアドレスを返します: SceneChenge
+  コンパイル中...
+  TitleScene.cpp
+D:\就職作品\mylibrary\mylibrary\GameObject\Boss\BossBaseState.h(134,37): warning C4244: '初期化中': 'float' から 'const unsigned int' への変換です。データが失われる可能性があります。
+  main.cpp
+D:\就職作品\mylibrary\mylibrary\GameObject\Boss\BossBaseState.h(134,37): warning C4244: '初期化中': 'float' から 'const unsigned int' への変換です。データが失われる可能性があります。
+  コードを生成中...
   mylibrary.vcxproj -> D:\就職作品\mylibrary\x64\Debug\mylibrary.exe

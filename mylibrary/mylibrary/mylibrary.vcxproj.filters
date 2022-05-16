@@ -31,9 +31,6 @@
     <Filter Include="ソース ファイル\Collision">
       <UniqueIdentifier>{1c8d70ca-36d4-4012-b75c-06e78a9d287a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\GameObject">
-      <UniqueIdentifier>{df777b0f-c67b-4527-8357-6249f2c6657d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Input">
       <UniqueIdentifier>{cbd4e3be-ae4d-448b-8f01-386b6f0989ff}</UniqueIdentifier>
     </Filter>
@@ -45,9 +42,6 @@
     </Filter>
     <Filter Include="ソース ファイル\PostEffect">
       <UniqueIdentifier>{6ade78b7-998d-4d84-ae0a-fd24153887af}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\GameObject\Boss">
-      <UniqueIdentifier>{dea66b22-bf5d-4d0e-b4e2-7f8d990c20bf}</UniqueIdentifier>
     </Filter>
     <Filter Include="ヘッダー ファイル\2d">
       <UniqueIdentifier>{98e7dfa7-42f9-45a2-a538-8a08b27c2895}</UniqueIdentifier>
@@ -79,14 +73,20 @@
     <Filter Include="ヘッダー ファイル\Math">
       <UniqueIdentifier>{42a5ea57-d12e-42cf-8c3b-22e3493c911e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Scene">
-      <UniqueIdentifier>{c8447c6b-c701-481e-8b8b-90abf3a1ea6b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\PostEffect">
       <UniqueIdentifier>{cdf03dd7-06fa-4158-a676-d3d163f362ff}</UniqueIdentifier>
     </Filter>
     <Filter Include="シェーダーファイル">
       <UniqueIdentifier>{5d585942-4a05-44a4-ae30-eee12c29ddcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Scene">
+      <UniqueIdentifier>{c8447c6b-c701-481e-8b8b-90abf3a1ea6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject">
+      <UniqueIdentifier>{df777b0f-c67b-4527-8357-6249f2c6657d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject\Boss">
+      <UniqueIdentifier>{dea66b22-bf5d-4d0e-b4e2-7f8d990c20bf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
