@@ -60,13 +60,13 @@ void GameScene::Initialize(Direcx12Base* dxCommon, Input* input, AudioManager* a
 	tMng->spriteLoadTexture(6, L"Resources/textures/Warning.png");
 
 	//スプライト生成
-	sprite = make_unique<Sprite>();
-	sprite->Initialize(0);
-	sprite->SetPosition(0, 0);
-	sprite->SetSize(1280, 1080);
-	sprite2 = make_unique<Sprite>();
-	sprite2->Initialize(3);
-	sprite2->SetPosition(0,0);
+	spriteBackGround = make_unique<Sprite>();
+	spriteBackGround->Initialize(0);
+	spriteBackGround->SetPosition(0, 0);
+	spriteBackGround->SetSize(1280, 1080);
+	spriteBossHp = make_unique<Sprite>();
+	spriteBossHp->Initialize(3);
+	spriteBossHp->SetPosition(0,0);
 	sprite3 = make_unique<Sprite>();
 	sprite3->Initialize(4);
 	sprite3->SetPosition(0, 0);
@@ -109,6 +109,9 @@ void GameScene::Initialize(Direcx12Base* dxCommon, Input* input, AudioManager* a
 
 	//3Dオブジェクト生成とモデルのセット
 	//FBX
+	object_Player = Player::Create(model_Player);
+	object_Player->SetPosition({ 0,0,-30 });
+	object_Player->SetRotation({ 0,0,0 });
 	object_Ground = TouchableObject::Create(model_Ground);
 	object_Ground->SetPosition({ 0,0,0 });
 	object_Ground->SetScale({ 8,8,8 });
@@ -121,9 +124,6 @@ void GameScene::Initialize(Direcx12Base* dxCommon, Input* input, AudioManager* a
 	objectEAttack = AttackEnemyCollisionObject::Create(model_EnemyAttackObject);
 	objectEAttack->SetPosition({ 10,5,30});
 	objectEAttack->SetScale({ 4,4,4 });
-	object_Player = Player::Create(model_Player);
-	object_Player->SetPosition({ 0,0,-30 });
-	object_Player->SetRotation({ 0,0,0 });
 
 	//OBJ
 	objcube = ObjectObj::Create(modelcube);
@@ -143,8 +143,18 @@ void GameScene::Initialize(Direcx12Base* dxCommon, Input* input, AudioManager* a
 
 void GameScene::Update()
 {
-	//カメラ更新
-	debugCamera->Update();
+	if (spriteWarning->Lessthan(0.1f))
+	{
+		objectBoss->Update(object_Player.get(), objectEAttack.get(), audio);
+		//カメラ更新
+		debugCamera->Update();
+	}
+
+	if (object_Player->GetLifeFlag() && spriteWarning->Lessthan(0.1f))
+	{
+		object_Player->Update(debugCamera, objectAttack.get(), objectBoss.get(), audio);
+	}
+
 	//ゲームパッド更新
 	gamepad->Update();
 	//パーティクル生成
@@ -152,7 +162,7 @@ void GameScene::Update()
 	Vector3 pos = object_Player->GetPosition();
 	
 	object_Ground->Update();
-	objcube->Update();
+	//objcube->Update();
 	objectAttack->Update(object_Player.get(), particleMan, audio);
 	objectEAttack->Update(objectBoss.get(), object_Player.get(), audio);
 	collisionManager->CheckAllCollisions();
@@ -170,19 +180,9 @@ void GameScene::Update()
 		state = "ON";
 	}
 
-	if (spriteWarning->isMin())
-	{
-		objectBoss->Update(object_Player.get(), objectEAttack.get(), audio);
-	}
-
-	if (object_Player->GetLifeFlag() && spriteWarning->isMin())
-	{
-		object_Player->Update(debugCamera, objectAttack.get(), objectBoss.get(), audio);
-	}
-
 	int bossHp = objectAttack->GetHP();
 	int playerHp = object_Player->GetPlayerHP();
-	sprite2->SetSize(bossHp, 30);
+	spriteBossHp->SetSize(bossHp, 30);
 	sprite4->SetSize(playerHp, 300);
 
 	if (playerHp == 0)
@@ -228,7 +228,7 @@ void GameScene::FogDraw()
 	//// コマンドリストの取得
 	ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
 	ObjectObj::PreDraw(dxCommon->GetCommandList());
-	objcube->Draw();
+	//objcube->Draw();
 
 	particleMan->Draw(cmdList);
 	ObjectObj::PostDraw();
@@ -236,77 +236,76 @@ void GameScene::FogDraw()
 
 void GameScene::UIDraw()
 {
-	ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
-	//pPos[0] = object1->GetPosition().x;
-	//pPos[1] = object1->GetPosition().y;
-	//pPos[2] = object1->GetPosition().z;
+	/*pPos[0] = object_Player->GetPosition().x;
+	pPos[1] = object_Player->GetPosition().y;
+	pPos[2] = object_Player->GetPosition().z;
 
-	//Time[0] = object1->GetTime();
-	//Timerate[0] = object1->GetTimeRate();
-	//BTime[0] = objectBoss->GetTime();
+	Time[0] = object_Player->GetTime();
+	Timerate[0] = object_Player->GetTimeRate();
+	BTime[0] = objectBoss->GetTime();
 
-	//BTimerate[0] = objectBoss->GetTimeRate();
-	//HP[0] = objectAttack->GetHP();
-	//Stamina[0] = object1->Getstamina();
+	BTimerate[0] = objectBoss->GetTimeRate();
+	HP[0] = objectAttack->GetHP();
+	Stamina[0] = object_Player->Getstamina();
 
-	//timerflag = object1->GetTimerFlag();
-	//PHp[0] = object1->GetPlayerHP();
-	//Bpos[0] = objectBoss->GetPosition().x;
-	//Bpos[1] = objectBoss->GetPosition().y;
-	//Bpos[2] = objectBoss->GetPosition().z;
+	timerflag = object_Player->GetTimerFlag();
+	PHp[0] = object_Player->GetPlayerHP();
+	Bpos[0] = objectBoss->GetPosition().x;
+	Bpos[1] = objectBoss->GetPosition().y;
+	Bpos[2] = objectBoss->GetPosition().z;
 
-	//Bros[0] = objectBoss->GetRotation().x;
-	//Bros[1] = objectBoss->GetRotation().y;
-	//Bros[2] = objectBoss->GetRotation().z;
+	Bros[0] = objectBoss->GetRotation().x;
+	Bros[1] = objectBoss->GetRotation().y;
+	Bros[2] = objectBoss->GetRotation().z;
 
-	//Angle[0] = objectBoss->GetAngle();
+	Angle[0] = objectBoss->GetAngle();
 
-	//vectorPos[0] = objectBoss->Getresult().x;
-	//vectorPos[1] = objectBoss->Getresult().y;
-	//vectorPos[2] = objectBoss->Getresult().z;
+	vectorPos[0] = objectBoss->Getresult().x;
+	vectorPos[1] = objectBoss->Getresult().y;
+	vectorPos[2] = objectBoss->Getresult().z;
 
-	//rot[0] = object1->GetRotation().x;
-	//rot[1] = object1->GetRotation().y;
-	//rot[2] = object1->GetRotation().z;
+	rot[0] = object_Player->GetRotation().x;
+	rot[1] = object_Player->GetRotation().y;
+	rot[2] = object_Player->GetRotation().z;
 
-	//BApos[0] = objectEAttack->GetPosition().x;
-	//BApos[1] = objectEAttack->GetPosition().y;
-	//BApos[2] = objectEAttack->GetPosition().z;
+	BApos[0] = objectEAttack->GetPosition().x;
+	BApos[1] = objectEAttack->GetPosition().y;
+	BApos[2] = objectEAttack->GetPosition().z;
 
-	//dotVec[0] = objectBoss->GetDotVector();
+	dotVec[0] = objectBoss->GetDotVector();
 
-	//viewAngle[0] = objectBoss->GetradiusCos();
+	viewAngle[0] = objectBoss->GetradiusCos();
 
-	//ImGui::Begin("player");
-	//ImGui::SetWindowPos(ImVec2(0, 0));
-	//ImGui::SetWindowSize(ImVec2(500, 200));
-	//ImGui::InputFloat3("Pos", pPos);
-	//ImGui::InputFloat3("TotalTime", Time);
-	//ImGui::InputFloat3("TimeRate", Timerate);
-	//ImGui::InputFloat3("PlayerHP", PHp);
-	//ImGui::InputFloat3("Stamina",Stamina);
-	//ImGui::InputFloat3("Rotation",rot);
-	//ImGui::End();
+	ImGui::Begin("player");
+	ImGui::SetWindowPos(ImVec2(0, 0));
+	ImGui::SetWindowSize(ImVec2(500, 200));
+	ImGui::InputFloat3("Pos", pPos);
+	ImGui::InputFloat3("TotalTime", Time);
+	ImGui::InputFloat3("TimeRate", Timerate);
+	ImGui::InputFloat3("PlayerHP", PHp);
+	ImGui::InputFloat3("Stamina",Stamina);
+	ImGui::InputFloat3("Rotation",rot);
+	ImGui::End();
 
-	//ImGui::Begin("BOSS");
-	//ImGui::SetWindowPos(ImVec2(600, 0));
-	//ImGui::SetWindowSize(ImVec2(500, 200));
-	//ImGui::InputFloat3("BOSSPos", Bpos);
-	//ImGui::InputFloat3("BossDotVector", dotVec);
-	//ImGui::InputFloat3("siakaku", viewAngle);
-	//ImGui::InputFloat3("TotalTime", BTime);
-	//ImGui::InputFloat3("TimeRate", BTimerate);
-	//ImGui::InputInt("BOSSHP", HP);
-	//ImGui::End();
+	ImGui::Begin("BOSS");
+	ImGui::SetWindowPos(ImVec2(600, 0));
+	ImGui::SetWindowSize(ImVec2(500, 200));
+	ImGui::InputFloat3("BOSSPos", Bpos);
+	ImGui::InputFloat3("BossDotVector", dotVec);
+	ImGui::InputFloat3("siakaku", viewAngle);
+	ImGui::InputFloat3("TotalTime", BTime);
+	ImGui::InputFloat3("TimeRate", BTimerate);
+	ImGui::InputInt("BOSSHP", HP);
+	ImGui::End();*/
 
 	// コマンドリストの取得
-	//ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
+	ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
 	//スプライトのパイプラインをセット
 	Sprite::SetPipelineState(dxCommon->GetCommandList());
 	// 前景スプライト描画前処理
 	Sprite::PreDraw(cmdList);
 	sprite3->Draw(dxCommon->GetCommandList());
-	sprite2->Draw(dxCommon->GetCommandList());
+	spriteBossHp->Draw(dxCommon->GetCommandList());
 	sprite5->Draw(dxCommon->GetCommandList());
 	sprite4->Draw(dxCommon->GetCommandList());
 	spriteWarning->Draw(dxCommon->GetCommandList());

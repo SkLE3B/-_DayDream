@@ -90,13 +90,6 @@ void DebugCamera::Update()
 		dirty = true;
 	}
 
-	 //ホイール入力で距離を変更
-	//if (mouseMove.lZ != 0) {
-	//	distance -= mouseMove.lZ / 100.0f;
-	//	distance = max(distance, 1.0f);
-	//	dirty = true;
-	//}
-
 	if (dirty || viewDirty) {
 		float nowTheta = theta;
 		if (theta < 0)

@@ -5,17 +5,6 @@ Texture2D<float4> tex0 : register(t1); //深度バッファテクスチャ
 
 SamplerState smp : register(s0);      // 0番スロットに設定されたサンプラー
 
-//レイリー散乱
-float RayleighPhaseFunction(float fCos2)
-{
-	return 3.0f / (16.0f * 3.14159265) * (1.0f + fCos2);
-}
-//ミー散乱
-float MiePhaseFunction(float g, float fCos)
-{
-	return (1 - g) * (1 - g) / (4.0f * 3.14159265 * pow(1 + g * g - 2.0f * g * fCos, 1.5f));
-}
-
 //ランダムベクトル取得
 float2 randomVec(float2 fact)
 {
@@ -89,14 +78,12 @@ float4 main(VSOutput input) : SV_TARGET
 
 	 //右方向のベクトル
 	 float toTheRight = FractalSumNoise(density, input.uv + float2(timeX, timeY));
+	 
 	 //右斜め下方向のベクトル
 	 float diagonallyDownwardToTheRight = FractalSumNoise(density, input.uv + float2(timeX, timeX));
-	 float elec = step(0.985, 1 - abs(toTheRight - diagonallyDownwardToTheRight));
-
+	
 	 float  noise = toTheRight + diagonallyDownwardToTheRight * fogWeight;
-	 //float  noise = elec * fogWeight;
 	 float4 fogColor = float4(noise ,noise, noise, 1);
 	 float4 outputColor = lerp(bgColor, fogColor, fogWeight);
-	 
 	 return outputColor * FadeOut;
 }

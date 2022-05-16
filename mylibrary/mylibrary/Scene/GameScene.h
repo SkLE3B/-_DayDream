@@ -77,8 +77,8 @@ public:
 	void GotoEndScene(float Hp,int dead);
 private:
 	//スプライト用
-	std::unique_ptr<Sprite> sprite;
-	std::unique_ptr<Sprite> sprite2;
+	std::unique_ptr<Sprite> spriteBackGround;
+	std::unique_ptr<Sprite> spriteBossHp;
 	std::unique_ptr<Sprite> sprite3;
 	std::unique_ptr<Sprite> sprite4;
 	std::unique_ptr<Sprite> sprite5;
