@@ -63,8 +63,14 @@ public:
 		return (getMax() <= get()); // Å‘å’lˆÈã‚È‚ç–ƒ^ƒ“
 	}
 
+	//ˆÈ‰º‚È‚ç
 	bool Lessthan(const float value) {
 		return  get() <= value;
+	}
+
+	//ˆÈã‚È‚ç
+	bool Morethan(const float value) {
+		return  get() >= value;
 	}
 
 	// Š„‡‚ğæ“¾

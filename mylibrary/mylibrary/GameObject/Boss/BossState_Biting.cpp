@@ -65,7 +65,7 @@ void BossState_Biting::Biting(Player* player, AttackEnemyCollisionObject* ememyC
 		handle = EffekseerManager::PlayEffect(u"Resources/Effects/scroll.efk", { weak_boss.lock()->GetPosition().x + walrdPos.x, weak_boss.lock()->GetPosition().y + walrdPos.y, weak_boss.lock()->GetPosition().z + walrdPos.z });
 		EffekseerManager::SetScale(handle, { 3,3,3 });
 
-		if (IsTimeOut(totalTime, 0.0001f))
+		if (IsTimeOut(totalTime, 0.00001f))
 		{
 			handle = EffekseerManager::StopEffect(handle);
 		}

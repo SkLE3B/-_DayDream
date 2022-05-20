@@ -3,6 +3,10 @@
 #include <DirectXMath.h>
 #include "../base/SafeDelete.h"
 #include "../3d/EffekseerManager.h"
+#include "../Base/LevelLoader.h"
+#include <map>
+
+struct LevelData;
 
 class CollisionManager;
 class Player;
@@ -73,15 +77,28 @@ public:
 	/// エンドシーンに移動
 	/// </summary>
 	/// <param name="Hp">HP</param>
-	/// <param name="dead">死んだオブジェクト(1ならプレイヤー2ならボス)</param>
+	/// <param name="dead">死んだ対象オブジェクト(1ならプレイヤー2ならボス)</param>
 	void GotoEndScene(float Hp,int dead);
+
+	/// <summary>
+	/// スプライト初期化
+	/// </summary>
+	void SpriteInitialize(TextureManager* textureManager);
+
+	/// <summary>
+	///	テクスチャ読み込み
+	/// </summary>
+	void LoadTexture(TextureManager* textureManager);
+
+	void ObjectInitialize(LevelData::ObjectData objectData, Object3d* object);
 private:
+	LevelData* levelData = nullptr;
 	//スプライト用
 	std::unique_ptr<Sprite> spriteBackGround;
-	std::unique_ptr<Sprite> spriteBossHp;
-	std::unique_ptr<Sprite> sprite3;
-	std::unique_ptr<Sprite> sprite4;
-	std::unique_ptr<Sprite> sprite5;
+	std::unique_ptr<Sprite> spriteBossHpFront;
+	std::unique_ptr<Sprite> spriteBossHpBack;
+	std::unique_ptr<Sprite> spritePlayerHpFront;
+	std::unique_ptr<Sprite> spritePlayerHpBack;
 	std::unique_ptr<Sprite> spriteWarning;
 	ParticleManager* particleMan = nullptr;
 	Fog* fog = nullptr;
@@ -94,20 +111,25 @@ private:
 	Model* model_AttackObject      = nullptr;
 	Model* model_EnemyAttackObject = nullptr;
 
+	//TouchableObject* object_Ground              = nullptr;
+	//Player* object_Player                       = nullptr;
+	//Boss* objectBoss                            = nullptr;
+	//AttackCollisionObject* objectAttack         = nullptr;
+    //AttackEnemyCollisionObject * objectEAttack  = nullptr;
+	
 	std::shared_ptr<Player> object_Player;
-	TouchableObject*        object_Ground = nullptr;
 	std::shared_ptr<Boss>   objectBoss;
-
 	std::shared_ptr<AttackCollisionObject> objectAttack;
 	std::shared_ptr<AttackEnemyCollisionObject> objectEAttack;
+	std::shared_ptr<TouchableObject> object_Ground;
 
+	std::map<std::string, Model*> models;
+	std::vector<Object3d*> objects;
+	CollisionManager* collisionManager = nullptr;
 	Effekseer::Handle handle;
 
-	//オブジェクト<OBJ>
-	ObjLoder* modelcube = nullptr;
-	ObjectObj* objcube = nullptr;
-	CollisionManager* collisionManager = nullptr;
-	
+	std::string swich;
+
 	float pPos[3]      = { 0,0,0 };
 	float Bpos[3]      = { 0,0,0 };
 	float BApos[3]     = { 0,0,0 };

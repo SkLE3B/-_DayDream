@@ -33,21 +33,9 @@ bool Boss::Initialize()
 		return false;
 	}
 
-	maxTime = 0.3f;//‘S‘ÌŽžŠÔ[s]
-	timeRate = 0;;
-	elapsedTime = 0;
-	totalTime = 0;
-	timerFlag = false;
-	easing_start = {};
-	easing_end = {};
-	walrdPosition = {};
-	player_position = {};
-	angle = 0;
-	
 	lifeFlag = true;
     ChangeState(std::make_shared<BossState_Wait>());
 	forwardVector = { 0,0,1 };
-	float bai = 1.0f;
 	radius = 10.5f;
 	SetCollider(new SphereCollider(XMVECTOR({ radius,radius,radius,0 }), radius), COLLISION_ATTR_ENEMYS);
 

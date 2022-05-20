@@ -27,7 +27,7 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	//static Player* Create(Model* model = nullptr);
-	static std::shared_ptr<Player> Create(Model* model = nullptr);
+	static std::shared_ptr<Player> Create(Model* model, Camera* camera);
 
 protected:
 	// ボスクエリーコールバッククラス

@@ -116,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(SolutionDir)lib/Effekseer/include/Effekseer;$(SolutionDir)lib/Effekseer/include/EffekseerRendererDX12;$(SolutionDir)lib/fbx_sdk/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(SolutionDir)lib/Effekseer/include/Effekseer;$(SolutionDir)lib/Effekseer/include/EffekseerRendererDX12;$(SolutionDir)lib/fbx_sdk/include;$(SolutionDir)lib/nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -133,7 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(SolutionDir)lib/Effekseer/include/Effekseer;$(SolutionDir)lib/Effekseer/include/EffekseerRendererDX12;$(SolutionDir)lib/fbx_sdk/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex;$(SolutionDir)imgui;$(SolutionDir)lib/Effekseer/include/Effekseer;$(SolutionDir)lib/Effekseer/include/EffekseerRendererDX12;$(SolutionDir)lib/fbx_sdk/include;$(SolutionDir)lib/nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -165,6 +165,7 @@
     <ClInclude Include="Audio\AudioManager.h" />
     <ClInclude Include="Base\Direcx12Base.h" />
     <ClInclude Include="Base\FlameRate.h" />
+    <ClInclude Include="Base\LevelLoader.h" />
     <ClInclude Include="Base\SafeDelete.h" />
     <ClInclude Include="Base\Timer.h" />
     <ClInclude Include="Base\windowsApi.h" />
@@ -199,6 +200,7 @@
     <ClInclude Include="Input\Input.h" />
     <ClInclude Include="Math\Easing.h" />
     <ClInclude Include="Math\ExNum.h" />
+    <ClInclude Include="Math\Fader.h" />
     <ClInclude Include="Math\Matrix4.h" />
     <ClInclude Include="Math\Quaternion.h" />
     <ClInclude Include="Math\Vector3.h" />
@@ -233,6 +235,7 @@
     <ClCompile Include="Audio\AudioManager.cpp" />
     <ClCompile Include="Base\Direcx12Base.cpp" />
     <ClCompile Include="Base\FlameRate.cpp" />
+    <ClCompile Include="Base\LevelLoader.cpp" />
     <ClCompile Include="Base\windowsApi.cpp" />
     <ClCompile Include="Camera\BackCamera.cpp" />
     <ClCompile Include="Camera\Camera.cpp" />
@@ -260,6 +263,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\Easing.cpp" />
     <ClCompile Include="Math\ExNum.cpp" />
+    <ClCompile Include="Math\Fader.cpp" />
     <ClCompile Include="Math\Matrix4.cpp" />
     <ClCompile Include="Math\Quaternion.cpp" />
     <ClCompile Include="Math\Vector3.cpp" />

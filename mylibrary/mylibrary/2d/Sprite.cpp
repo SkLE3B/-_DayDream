@@ -74,6 +74,7 @@ void Sprite::Initialize(UINT texnumber)
 		D3D12_HEAP_FLAG_NONE,
 		&RESOURCE_DESC,
 		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&vertBuff));
+	
 	if (FAILED(result))
 	{
 		assert(0);
@@ -184,6 +185,7 @@ void Sprite::Draw(ID3D12GraphicsCommandList* cmdList)
 	constMap->mat = spriteMatWorld * common->MatProjection;//行列の合成
 	constMap->Time = time;
 
+	//フェードアウト
 	FadeOut();
 
 	constBuff->Unmap(0, nullptr);
@@ -320,7 +322,7 @@ void Sprite::Fadeout(const std::string& swich)
 {
 	if (swich == "ON")
 	{
-		Color.w -= 0.01f;
+		Color.w -= 0.007f;
 	}
 
 	if (Color.w <= 0.0f)
