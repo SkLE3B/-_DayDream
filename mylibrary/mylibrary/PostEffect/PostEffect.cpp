@@ -243,128 +243,6 @@ void PostEffect::Initialize(Camera* camera)
 	   );
    }
 
-   //tex2
-   {
-	   // WICテクスチャのロード
-	   TexMetadata metadata{};
-	   ScratchImage scratchImg{};
-
-	   result = LoadFromWICFile(
-		   L"Resources/textures/noise2.png", WIC_FLAGS_NONE,
-		   &metadata, scratchImg);
-	   if (FAILED(result)) {
-		   assert(0);
-		   return;
-	   }
-
-	   const Image* img = scratchImg.GetImage(0, 0, 0); // 生データ抽出
-
-	   // 画像の設定
-	   CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
-		   metadata.format,
-		   metadata.width,
-		   (UINT)metadata.height,
-		   (UINT16)metadata.arraySize,
-		   (UINT16)metadata.mipLevels
-	   );
-
-	   // テクスチャ用バッファの生成
-	   result = common->dxBase->GetDevice()->CreateCommittedResource(
-		   &heapProTex,
-		   D3D12_HEAP_FLAG_NONE,
-		   &texresDesc,
-		   D3D12_RESOURCE_STATE_GENERIC_READ, // テクスチャ用指定
-		   nullptr,
-		   IID_PPV_ARGS(&noiseBuff2));
-
-	   // テクスチャバッファにデータ転送
-	   result = noiseBuff2->WriteToSubresource(
-		   0,
-		   nullptr, // 全領域へコピー
-		   img->pixels,    // 元データアドレス
-		   (UINT)img->rowPitch,  // 1ラインサイズ
-		   (UINT)img->slicePitch // 1枚サイズ
-	   );
-	   // シェーダリソースビュー作成
-	   D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; // 設定構造体
-	   D3D12_RESOURCE_DESC resDesc = noiseBuff2->GetDesc();
-	   //シェーダーリソースビューの設定
-	   srvDesc.Format = resDesc.Format;
-	   srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	   srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
-	   srvDesc.Texture2D.MipLevels = 1;
-
-	   //シェーダーリソースビューの生成
-	   common->dxBase->GetDevice()->CreateShaderResourceView(noiseBuff2.Get(),
-		   &srvDesc,
-		   CD3DX12_CPU_DESCRIPTOR_HANDLE(
-			   descHeapSRV->GetCPUDescriptorHandleForHeapStart(), 1,
-			   common->dxBase->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
-		   )
-	   );
-   }
-
-   //tex3
-   {
-	   // WICテクスチャのロード
-	   TexMetadata metadata{};
-	   ScratchImage scratchImg{};
-
-	   result = LoadFromWICFile(
-		   L"Resources/textures/noise3.png", WIC_FLAGS_NONE,
-		   &metadata, scratchImg);
-	   if (FAILED(result)) {
-		   assert(0);
-		   return;
-	   }
-
-	   const Image* img = scratchImg.GetImage(0, 0, 0); // 生データ抽出
-
-	   // 画像の設定
-	   CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
-		   metadata.format,
-		   metadata.width,
-		   (UINT)metadata.height,
-		   (UINT16)metadata.arraySize,
-		   (UINT16)metadata.mipLevels
-	   );
-
-	   // テクスチャ用バッファの生成
-	   result = common->dxBase->GetDevice()->CreateCommittedResource(
-		   &heapProTex,
-		   D3D12_HEAP_FLAG_NONE,
-		   &texresDesc,
-		   D3D12_RESOURCE_STATE_GENERIC_READ, // テクスチャ用指定
-		   nullptr,
-		   IID_PPV_ARGS(&noiseBuff3));
-
-	   // テクスチャバッファにデータ転送
-	   result = noiseBuff3->WriteToSubresource(
-		   0,
-		   nullptr, // 全領域へコピー
-		   img->pixels,    // 元データアドレス
-		   (UINT)img->rowPitch,  // 1ラインサイズ
-		   (UINT)img->slicePitch // 1枚サイズ
-	   );
-	   // シェーダリソースビュー作成
-	   D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; // 設定構造体
-	   D3D12_RESOURCE_DESC resDesc = noiseBuff3->GetDesc();
-	   //シェーダーリソースビューの設定
-	   srvDesc.Format = resDesc.Format;
-	   srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	   srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
-	   srvDesc.Texture2D.MipLevels = 1;
-
-	   //シェーダーリソースビューの生成
-	   common->dxBase->GetDevice()->CreateShaderResourceView(noiseBuff3.Get(),
-		   &srvDesc,
-		   CD3DX12_CPU_DESCRIPTOR_HANDLE(
-			   descHeapSRV->GetCPUDescriptorHandleForHeapStart(), 1,
-			   common->dxBase->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
-		   )
-	   );
-   }
-
 	//RTV用デスクリプタヒープ設定
 	D3D12_DESCRIPTOR_HEAP_DESC rtvDescHeapDesc{};
 	rtvDescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
@@ -446,7 +324,6 @@ void PostEffect::Initialize(Camera* camera)
 
 void PostEffect::PreDrawScene(ID3D12GraphicsCommandList* cmdList)
 {
-
 	CD3DX12_RESOURCE_BARRIER resourceBarrierShaderToRender = CD3DX12_RESOURCE_BARRIER::Transition(texBuff.Get(),
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
 		D3D12_RESOURCE_STATE_RENDER_TARGET);

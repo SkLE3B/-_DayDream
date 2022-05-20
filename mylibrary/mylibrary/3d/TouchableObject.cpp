@@ -2,17 +2,17 @@
 #include "../Collision/MeshCollider.h"
 #include "../Collision/CollisionAttribute.h"
 
-TouchableObject* TouchableObject::Create(Model* model, Camera* camera)
+std::shared_ptr<TouchableObject> TouchableObject::Create(Model* model, Camera* camera)
 {
 	// オブジェクトのインスタンスを生成
-	TouchableObject* instance = new TouchableObject();
+	std::shared_ptr<TouchableObject> instance = std::make_shared<TouchableObject>();
 	if (instance == nullptr) {
 		return nullptr;
 	}
 
 	// 初期化
-	if (!instance->Initialize(model, camera)) {
-		delete instance;
+	if (!instance->Initialize(model,camera)) {
+		instance.reset();
 		assert(0);
 	}
 

@@ -17,7 +17,7 @@ using namespace DirectX;
 
 Camera* Player::camera = nullptr;
 
-std::shared_ptr<Player> Player::Create(Model* model)
+std::shared_ptr<Player> Player::Create(Model* model, Camera* camera)
 {
 	// 3Dオブジェクトのインスタンスを生成
 	std::shared_ptr<Player> instance = std::make_shared<Player>();
@@ -45,7 +45,6 @@ bool Player::Initialize(Camera* camera)
 		return false;
 	}
 	Player::camera = camera;
-
 	prePos = position;
 	direction = { 0,0,1 };
 	stamina = 2.0f;
@@ -187,7 +186,7 @@ void Player::PlayerFollowCamera(Camera* camera)
 	// ⓸　１と２と３で求めた情報を使って、新しい視点を決定する。
 	/////////////////////////////////////////////////////////////////
 	//ちょっとづつ追尾。
-	float weight = 0.4f;  //このウェイトの値は0.0～1.0の値をとる。1.0に近づくほど追尾が強くなる。
+	float weight = 0.0f;  //このウェイトの値は0.0～1.0の値をとる。1.0に近づくほど追尾が強くなる。
 	toNewCameraPos = toNewCameraPos * weight + toCameraPosXZ * (1.0f - weight);
 	toNewCameraPos.Normalize();
 	toNewCameraPos *= toCameraPosXZLen;
@@ -197,16 +196,17 @@ void Player::PlayerFollowCamera(Camera* camera)
 	/////////////////////////////////////////////////////////////////
 	// ⓹　視点と注視点をカメラに設定して終わり。
 	/////////////////////////////////////////////////////////////////
+	
 	if (camera->GetDirtyFlag())
 	{
 		cameraTarget = target;
 		camera->SetTarget(cameraTarget);
+		camera->SetEye(cameraPosition);
 	}
 }
 
 void Player::MoveCamera(Camera* camera,Boss* boss)
 {
-	//prePos = position;
 	//カメラのビュー行列の逆行列を計算
 	camMatWorld = XMMatrixInverse(nullptr, camera->GetMatView());
 	cameraDirectionZ = Vector3(camMatWorld.r[2].m128_f32[0], 0, camMatWorld.r[2].m128_f32[2]).Normalize();

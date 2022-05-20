@@ -6,10 +6,11 @@ class TouchableObject :
 {
 public:
 	/// <summary>
-	/// オブジェクト生成
+	/// 3Dオブジェクト生成
 	/// </summary>
 	/// <returns></returns>
-	static TouchableObject* Create(Model* model = nullptr,Camera* camera = nullptr);
+	//static Boss* Create(Model* model = nullptr);
+	static std::shared_ptr<TouchableObject> Create(Model* model = nullptr, Camera* camera = nullptr);
 
 	/// <summary>
 	/// 初期化

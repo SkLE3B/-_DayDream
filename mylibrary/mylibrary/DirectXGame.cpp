@@ -48,6 +48,7 @@ void DirectXGame::Update()
 	SceneManager::GetInstance()->Update(dxBase.get(), input, audioManger.get(), textureManager.get(), Dcamera.get(), Bcamera.get(), gamepad.get(),
 		debugText->GetInstance(),testfog.get(),postEffect);
 
+	//エフェクトマネージャー更新
 	EffekseerManager::Update(dxBase.get(), Dcamera.get());
 }
 
@@ -120,4 +121,3 @@ void DirectXGame::Finalize()
 	//基底クラスの後始末
 	GameBase::Finalize();
 }
-

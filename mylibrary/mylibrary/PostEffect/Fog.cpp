@@ -28,8 +28,9 @@ void Fog::Initialize(Camera* camera)
 	//パイプライン生成
 	CreateGraphicsPipelineState();
 
-	fadeOut = 0.5f;
-	fadeOutFlag = false;
+	fadeOut = 1.0f;
+	fadeStart = false;
+	fadeFog = new Fader(1.0f,0.0f,1.0f);
 
 	CD3DX12_HEAP_PROPERTIES heapPro = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
 	CD3DX12_RESOURCE_DESC resource = CD3DX12_RESOURCE_DESC::Buffer(sizeof(VertexPosUv) * vertNum);
@@ -248,128 +249,6 @@ void Fog::Initialize(Camera* camera)
 		);
 	}
 
-	//tex2
-	{
-		// WICテクスチャのロード
-		TexMetadata metadata{};
-		ScratchImage scratchImg{};
-
-		result = LoadFromWICFile(
-			L"Resources/textures/noise2.png", WIC_FLAGS_NONE,
-			&metadata, scratchImg);
-		if (FAILED(result)) {
-			assert(0);
-			return;
-		}
-
-		const Image* img = scratchImg.GetImage(0, 0, 0); // 生データ抽出
-
-		// 画像の設定
-		CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
-			metadata.format,
-			metadata.width,
-			(UINT)metadata.height,
-			(UINT16)metadata.arraySize,
-			(UINT16)metadata.mipLevels
-		);
-
-		// テクスチャ用バッファの生成
-		result = common->dxBase->GetDevice()->CreateCommittedResource(
-			&heapCpu,
-			D3D12_HEAP_FLAG_NONE,
-			&texresDesc,
-			D3D12_RESOURCE_STATE_GENERIC_READ, // テクスチャ用指定
-			nullptr,
-			IID_PPV_ARGS(&noiseBuff2));
-
-		// テクスチャバッファにデータ転送
-		result = noiseBuff2->WriteToSubresource(
-			0,
-			nullptr, // 全領域へコピー
-			img->pixels,    // 元データアドレス
-			(UINT)img->rowPitch,  // 1ラインサイズ
-			(UINT)img->slicePitch // 1枚サイズ
-		);
-		// シェーダリソースビュー作成
-		D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; // 設定構造体
-		D3D12_RESOURCE_DESC resDesc = noiseBuff2->GetDesc();
-		//シェーダーリソースビューの設定
-		srvDesc.Format = resDesc.Format;
-		srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-		srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
-		srvDesc.Texture2D.MipLevels = 1;
-
-		//シェーダーリソースビューの生成
-		common->dxBase->GetDevice()->CreateShaderResourceView(noiseBuff2.Get(),
-			&srvDesc,
-			CD3DX12_CPU_DESCRIPTOR_HANDLE(
-				descHeapSRV->GetCPUDescriptorHandleForHeapStart(), 1,
-				common->dxBase->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
-			)
-		);
-	}
-
-	//tex3
-	{
-		// WICテクスチャのロード
-		TexMetadata metadata{};
-		ScratchImage scratchImg{};
-
-		result = LoadFromWICFile(
-			L"Resources/textures/noise3.png", WIC_FLAGS_NONE,
-			&metadata, scratchImg);
-		if (FAILED(result)) {
-			assert(0);
-			return;
-		}
-
-		const Image* img = scratchImg.GetImage(0, 0, 0); // 生データ抽出
-
-		// 画像の設定
-		CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
-			metadata.format,
-			metadata.width,
-			(UINT)metadata.height,
-			(UINT16)metadata.arraySize,
-			(UINT16)metadata.mipLevels
-		);
-
-		// テクスチャ用バッファの生成
-		result = common->dxBase->GetDevice()->CreateCommittedResource(
-			&heapCpu,
-			D3D12_HEAP_FLAG_NONE,
-			&texresDesc,
-			D3D12_RESOURCE_STATE_GENERIC_READ, // テクスチャ用指定
-			nullptr,
-			IID_PPV_ARGS(&noiseBuff3));
-
-		// テクスチャバッファにデータ転送
-		result = noiseBuff3->WriteToSubresource(
-			0,
-			nullptr, // 全領域へコピー
-			img->pixels,    // 元データアドレス
-			(UINT)img->rowPitch,  // 1ラインサイズ
-			(UINT)img->slicePitch // 1枚サイズ
-		);
-		// シェーダリソースビュー作成
-		D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; // 設定構造体
-		D3D12_RESOURCE_DESC resDesc = noiseBuff3->GetDesc();
-		//シェーダーリソースビューの設定
-		srvDesc.Format = resDesc.Format;
-		srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-		srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
-		srvDesc.Texture2D.MipLevels = 1;
-
-		//シェーダーリソースビューの生成
-		common->dxBase->GetDevice()->CreateShaderResourceView(noiseBuff3.Get(),
-			&srvDesc,
-			CD3DX12_CPU_DESCRIPTOR_HANDLE(
-				descHeapSRV->GetCPUDescriptorHandleForHeapStart(), 1,
-				common->dxBase->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
-			)
-		);
-	}
-
 	//RTV用デスクリプタヒープ設定
 	D3D12_DESCRIPTOR_HEAP_DESC rtvDescHeapDesc{};
 	rtvDescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
@@ -473,16 +352,14 @@ void Fog::PreDrawScene(ID3D12GraphicsCommandList* cmdList)
 		descHeapDSV->GetCPUDescriptorHandleForHeapStart();
 	//レンダーターゲットをセット
 	cmdList->OMSetRenderTargets(1, &rtvH, false, &dsvH);
-
+	//ビューポート設定
 	CD3DX12_VIEWPORT viewPort = CD3DX12_VIEWPORT(0.0f, 0.0f,
 		windowsApi::window_width, windowsApi::window_height);
-	//ビューポート設定
 	cmdList->RSSetViewports(1, &viewPort);
+	//シザリング短形設定
 	CD3DX12_RECT rect = CD3DX12_RECT(0, 0, windowsApi::window_width,
 		windowsApi::window_height);
-	//シザリング短形設定
 	cmdList->RSSetScissorRects(1, &rect);
-
 	//全画面クリア
 	cmdList->ClearRenderTargetView(rtvH, clearColor, 0, nullptr);
 	//深度バッファクリア
@@ -515,11 +392,9 @@ void Fog::Draw(ID3D12GraphicsCommandList* cmdList)
 		constMap->inverse = camera->GetInverseView();
 		constMap->matWorld = world;
 		constMap->Time = time;
-		constMap->FadeOut = this->fadeOut;
+		constMap->FadeOut = fadeFog->get();
 
 		TimeCount();
-		FadeOut();
-
 		this->constBuff->Unmap(0, nullptr);
 	}
 
@@ -699,17 +574,17 @@ void Fog::TimeCount()
 	time.x -= 0.005f;
 }
 
-void Fog::FadeOut()
+void Fog::FadeOut(const float value)
 {
-	if (fadeOutFlag)
-	{
-		fadeOut -= 0.005f;
+	fadeFog->Fadeout(value);
+}
 
-		if (fadeOut == 0)
-		{
-			ChengeFadeOutFlag();
-			fadeOut = 1.0f;
-			fadeOutFlag = !fadeOutFlag;
-		}
-	}
+void Fog::FadeIn(const float value)
+{
+	fadeFog->Fadein(value);
+}
+
+void Fog::SetAlpha(float alpha)
+{
+	fadeFog->set(alpha);
 }

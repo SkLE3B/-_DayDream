@@ -1,6 +1,7 @@
 #pragma once
 #include "../2d/Sprite.h"
 #include "../Camera/Camera.h"
+#include "../Math/Fader.h"
 
 class Fog :
     public Sprite
@@ -66,25 +67,46 @@ public://メンバ関数
     /// <summary>
     /// フェードアウト
     /// </summary>
-    void FadeOut();
+    void FadeOut(const float value);
+
+    /// <summary>
+    /// フェードイン
+    /// </summary>
+    void FadeIn(const float value);
 
     /// <summary>
     /// フェードアウトフラグ切り替え
     /// </summary>
     /// <returns>フェードアウトフラグ</returns>
-    bool& ChengeFadeOutFlag() { return fadeOutFlag = !fadeOutFlag;}
+    bool& ChengeFadeOutFlag() { return fadeStart = !fadeStart;}
+
+    //値が最大値かどうか？
+    bool IsMax() { return fadeFog->isMax(); }
+
+    //以上なら
+    bool Morethan(float value) { return fadeFog->Morethan(value); }
 
     /// <summary>
     /// セッター
     /// </summary>
     void SetFadeOut(const float& fadeout) { fadeOut = fadeout; }
 
-    bool& GetFadeOutFlag() { return fadeOutFlag; }
+    bool& GetFadeOutFlag() { return fadeStart; }
 
     void ResetFade(const float& fadeout, bool& fadeOutFlag) { 
         fadeOut = fadeout;
         fadeOutFlag = false;
     }
+
+    bool& StopFade() { return fadeStart = false; };
+
+    ///<summary>
+    ///alphaの値変更
+    /// </summary>
+    /// <param name="alpha">α</param>
+    void SetAlpha(float alpha);
+
+    float GetAlpha() { return fadeOut;}
 
 private://静的メンバ変数
 //画面クリアカラー
@@ -92,6 +114,7 @@ private://静的メンバ変数
     // カメラ
     static Camera* camera;
 private://メンバ変数
+    Fader* fadeFog;
     //テクスチャバッファ
     ComPtr<ID3D12Resource> texBuff;
     ComPtr<ID3D12Resource> noiseBuff;
@@ -118,6 +141,6 @@ private://メンバ変数
     XMFLOAT3 cameraPos;    //カメラ座標(ワールド座標)
     XMFLOAT4 distance;     //距離
     float    fadeOut;      //フェードアウト
-    bool     fadeOutFlag;  //フェードアウトフラグ
+    bool     fadeStart;  
+    bool operation;        //操作中
 };
-

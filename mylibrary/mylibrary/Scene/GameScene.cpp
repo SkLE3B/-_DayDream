@@ -6,6 +6,7 @@
 #include<d3dcompiler.h>
 #include<string>
 #include<DirectXTex.h>
+#include <iomanip>
 #include<wrl.h>
 #include "../DirectXGame.h"
 #include "../3d/Object3d.h"
@@ -18,6 +19,7 @@
 #include "../Math/Vector3.h"
 #include "../GameObject/Boss/BossBaseState.h"
 #include "../Scene/SceneManager.h"
+#include "../Base/LevelLoader.h"
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
@@ -30,6 +32,7 @@ GameScene::GameScene()
 
 GameScene::~GameScene()
 {
+	Safe_Delete(levelData);
 	Safe_Delete(particleMan);
 	Safe_Delete(model_Player);
 	Safe_Delete(model_Ground);
@@ -37,9 +40,6 @@ GameScene::~GameScene()
 	Safe_Delete(model_Boss);
 	Safe_Delete(model_EnemyAttackObject);
 	Safe_Delete(model_EnemyAttackObject);
-	Safe_Delete(modelcube);
-	Safe_Delete(object_Ground);
-	Safe_Delete(objcube);
 }
 
 void GameScene::Initialize(Direcx12Base* dxCommon, Input* input, AudioManager* audio, TextureManager* tMng,
@@ -47,55 +47,14 @@ void GameScene::Initialize(Direcx12Base* dxCommon, Input* input, AudioManager* a
 {
 	BaseScene::Initialize(dxCommon, input, audio, tMng, dCamera, bCamera, gamepad, dText,fog,post);
 
+	// パーティクルマネージャ生成
+	particleMan = ParticleManager::Create(dxCommon->GetDevice(), dCamera);
 	collisionManager = CollisionManager::GetInstance();
 	audio->Stop();
 	//サウンドの読み込み
 	audio->PlayLoop(L"Resources/sounds/Game.wav");
-	//テクスチャ読み込み
-	tMng->spriteLoadTexture(0, L"Resources/textures/background.png");
-	tMng->spriteLoadTexture(1, L"Resources/textures/HP.png");
-	tMng->spriteLoadTexture(3, L"Resources/textures/bossHp.png");
-	tMng->spriteLoadTexture(4, L"Resources/textures/HP2.png");
-	tMng->spriteLoadTexture(5, L"Resources/textures/HP2.png");
-	tMng->spriteLoadTexture(6, L"Resources/textures/Warning.png");
-
 	//スプライト生成
-	spriteBackGround = make_unique<Sprite>();
-	spriteBackGround->Initialize(0);
-	spriteBackGround->SetPosition(0, 0);
-	spriteBackGround->SetSize(1280, 1080);
-	spriteBossHp = make_unique<Sprite>();
-	spriteBossHp->Initialize(3);
-	spriteBossHp->SetPosition(0,0);
-	sprite3 = make_unique<Sprite>();
-	sprite3->Initialize(4);
-	sprite3->SetPosition(0, 0);
-	sprite3->SetSize(1000, 30);
-	sprite4 = make_unique<Sprite>();
-	sprite4->Initialize(1);
-	sprite4->SetPosition(480, 690);
-	sprite4->SetSize(800, 30);
-	sprite5 = make_unique<Sprite>();
-	sprite5->Initialize(5);
-	sprite5->SetPosition(480, 690);
-	sprite5->SetSize(800, 30);
-	spriteWarning = make_unique<Sprite>();
-	spriteWarning->Initialize(6);
-	spriteWarning->SetAlpha(0);
-	spriteWarning->SetPosition(350,50);
-	spriteWarning->SetSize(600, 300);
-	
-	// パーティクルマネージャ生成
-	particleMan = ParticleManager::Create(dxCommon->GetDevice(), dCamera);
-	//FBX
-	//モデル名を指定してファイル読み込み                  
-	model_Player = FbxLoader::GetInstance()->LoadModelFromFile("armar");
-	model_Ground = FbxLoader::GetInstance()->LoadModelFromFile("ground");
-	model_Boss = FbxLoader::GetInstance()->LoadModelFromFile("boss");
-	model_AttackObject = FbxLoader::GetInstance()->LoadModelFromFile("Esphere");
-	model_EnemyAttackObject = FbxLoader::GetInstance()->LoadModelFromFile("Esphere");
-	//OBJ
-	modelcube = ObjLoder::CreateFromOBJ("skydome");
+	SpriteInitialize(tMng);
 
 	//デバイスをセット
 	Object3d::SetDevice(dxCommon->GetDevice());
@@ -107,9 +66,64 @@ void GameScene::Initialize(Direcx12Base* dxCommon, Input* input, AudioManager* a
 	ObjectObj::SetCamera(dCamera);
 	ObjectObj::CreateGraphicsPipeline();
 
+	// カメラ注視点をセット
+	dCamera->SetTarget({ 0,15,-30 });
+	dCamera->SetDistance(25.0f);
+
+	//レベルデータの読み込み
+	levelData = LevelLoader::LoadFile("GameScene");
+	//FBX
+	//モデル名を指定してファイル読み込み                  
+	model_Player = FbxLoader::GetInstance()->LoadModelFromFile("armar");
+	model_Ground = FbxLoader::GetInstance()->LoadModelFromFile("ground");
+	model_Boss = FbxLoader::GetInstance()->LoadModelFromFile("boss");
+	model_AttackObject = FbxLoader::GetInstance()->LoadModelFromFile("Attack");
+	model_EnemyAttackObject = FbxLoader::GetInstance()->LoadModelFromFile("Esphere");
+
+	models.insert(std::make_pair("ground",  model_Ground));
+	models.insert(std::make_pair("boss",    model_Boss));
+	models.insert(std::make_pair("playerAttack", model_AttackObject));
+	models.insert(std::make_pair("EnemyAttack", model_EnemyAttackObject));
+
+	// レベルデータからオブジェクトを生成、配置
+	for (auto& objectData : levelData->objects) {
+		// ファイル名から登録済みモデルを検索
+		Model* model = nullptr;
+		decltype(models)::iterator it = models.find(objectData.fileName);
+		if (it != models.end()) {
+			model = it->second;
+		}
+
+		if (objectData.fileName == "ground")
+		{
+			shared_ptr<Object3d> newObject = TouchableObject::Create(model);
+			ObjectInitialize(objectData, newObject.get());
+			objects.push_back(newObject.get());
+		}
+		else if (objectData.fileName == "boss")
+		{
+			shared_ptr<Object3d> newObjectBoss = Boss::Create(model);
+			ObjectInitialize(objectData, newObjectBoss.get());
+			objects.push_back(newObjectBoss.get());
+
+		}
+		else if (objectData.fileName == "playerAttack")
+		{
+			shared_ptr<Object3d> newObjectAttackPlayer = AttackCollisionObject::Create(model);
+			ObjectInitialize(objectData, newObjectAttackPlayer.get());
+			objects.push_back(newObjectAttackPlayer.get());
+		}
+		else if (objectData.fileName == "EnemyAttack")
+		{
+			shared_ptr<Object3d> newObjectAttackEnemy = AttackEnemyCollisionObject::Create(model);
+			ObjectInitialize(objectData, newObjectAttackEnemy.get());
+			objects.push_back(newObjectAttackEnemy.get());
+		}
+	}
+
 	//3Dオブジェクト生成とモデルのセット
 	//FBX
-	object_Player = Player::Create(model_Player);
+	object_Player = Player::Create(model_Player,dCamera);
 	object_Player->SetPosition({ 0,0,-30 });
 	object_Player->SetRotation({ 0,0,0 });
 	object_Ground = TouchableObject::Create(model_Ground);
@@ -125,24 +139,28 @@ void GameScene::Initialize(Direcx12Base* dxCommon, Input* input, AudioManager* a
 	objectEAttack->SetPosition({ 10,5,30});
 	objectEAttack->SetScale({ 4,4,4 });
 
-	//OBJ
-	objcube = ObjectObj::Create(modelcube);
-	objcube->SetPosition({0,15,10});
-	objcube->SetScale({10,10,10});
-
 	state = "OFF";
 	timer = 0;
 	sceneChengeFlag = false;
-
+	fog->SetAlpha(0.0f);
 	fog->ResetFade(1.0f, fog->GetFadeOutFlag());
-
-	// カメラ注視点をセット
-	dCamera->SetTarget({ 0,1,0 });
-	dCamera->SetDistance(25.0f);
+	this->fog = fog;
+	fog->SetAlpha(0.3f);
+	swich = "ON";
 }
 
 void GameScene::Update()
 {
+	if (fog->Morethan(0.3f))
+	{
+		fog->FadeIn(0.01f);
+	}
+	
+	if (object_Player->GetLifeFlag() && spriteWarning->Lessthan(0.1f))
+	{
+		object_Player->Update(debugCamera, objectAttack.get(), objectBoss.get(), audio);
+	}
+
 	if (spriteWarning->Lessthan(0.1f))
 	{
 		objectBoss->Update(object_Player.get(), objectEAttack.get(), audio);
@@ -150,19 +168,11 @@ void GameScene::Update()
 		debugCamera->Update();
 	}
 
-	if (object_Player->GetLifeFlag() && spriteWarning->Lessthan(0.1f))
-	{
-		object_Player->Update(debugCamera, objectAttack.get(), objectBoss.get(), audio);
-	}
-
 	//ゲームパッド更新
 	gamepad->Update();
 	//パーティクル生成
 	particleMan->Update();
-	Vector3 pos = object_Player->GetPosition();
-	
 	object_Ground->Update();
-	//objcube->Update();
 	objectAttack->Update(object_Player.get(), particleMan, audio);
 	objectEAttack->Update(objectBoss.get(), object_Player.get(), audio);
 	collisionManager->CheckAllCollisions();
@@ -175,6 +185,7 @@ void GameScene::Update()
 	{
 		spriteWarning->Fadeout("ON");
 	}
+
 	if(spriteWarning->isMax())
 	{
 		state = "ON";
@@ -182,8 +193,8 @@ void GameScene::Update()
 
 	int bossHp = objectAttack->GetHP();
 	int playerHp = object_Player->GetPlayerHP();
-	spriteBossHp->SetSize(bossHp, 30);
-	sprite4->SetSize(playerHp, 300);
+	spriteBossHpBack->SetSize(bossHp, 30);
+	spritePlayerHpBack->SetSize(playerHp, 30);
 
 	if (playerHp == 0)
 	{
@@ -201,26 +212,21 @@ void GameScene::Draw()
 {
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
+	const bool DrawFlag = object_Player->GetColFlag();//当たり判定描画フラグ
+	const bool DrawBossCollisionFlag = objectBoss->GetColFlag();
+
 	//3Dオブジェクトの描画
 	if (object_Player->GetLifeFlag())
 	{
 		object_Player->Draw(cmdList);
 	}
-	object_Ground->Draw(cmdList);
-	objectBoss->Draw(cmdList);
-	const bool DrawFlag = object_Player->GetColFlag();//当たり判定描画フラグ
-	const bool DrawBossCollisionFlag = objectBoss->GetColFlag();
-	
 	if (DrawBossCollisionFlag)
 	{
 		objectEAttack->Draw(cmdList);
 	}
 	
-	//kookok
-	//if (DrawFlag)
-	//{
-	//	objectAttack->Draw(cmdList);
-	//}
+	object_Ground->Draw(cmdList);
+    objectBoss->Draw(cmdList);
 }
 
 void GameScene::FogDraw()
@@ -228,88 +234,23 @@ void GameScene::FogDraw()
 	//// コマンドリストの取得
 	ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
 	ObjectObj::PreDraw(dxCommon->GetCommandList());
-	//objcube->Draw();
-
 	particleMan->Draw(cmdList);
 	ObjectObj::PostDraw();
 }
 
 void GameScene::UIDraw()
 {
-	/*pPos[0] = object_Player->GetPosition().x;
-	pPos[1] = object_Player->GetPosition().y;
-	pPos[2] = object_Player->GetPosition().z;
-
-	Time[0] = object_Player->GetTime();
-	Timerate[0] = object_Player->GetTimeRate();
-	BTime[0] = objectBoss->GetTime();
-
-	BTimerate[0] = objectBoss->GetTimeRate();
-	HP[0] = objectAttack->GetHP();
-	Stamina[0] = object_Player->Getstamina();
-
-	timerflag = object_Player->GetTimerFlag();
-	PHp[0] = object_Player->GetPlayerHP();
-	Bpos[0] = objectBoss->GetPosition().x;
-	Bpos[1] = objectBoss->GetPosition().y;
-	Bpos[2] = objectBoss->GetPosition().z;
-
-	Bros[0] = objectBoss->GetRotation().x;
-	Bros[1] = objectBoss->GetRotation().y;
-	Bros[2] = objectBoss->GetRotation().z;
-
-	Angle[0] = objectBoss->GetAngle();
-
-	vectorPos[0] = objectBoss->Getresult().x;
-	vectorPos[1] = objectBoss->Getresult().y;
-	vectorPos[2] = objectBoss->Getresult().z;
-
-	rot[0] = object_Player->GetRotation().x;
-	rot[1] = object_Player->GetRotation().y;
-	rot[2] = object_Player->GetRotation().z;
-
-	BApos[0] = objectEAttack->GetPosition().x;
-	BApos[1] = objectEAttack->GetPosition().y;
-	BApos[2] = objectEAttack->GetPosition().z;
-
-	dotVec[0] = objectBoss->GetDotVector();
-
-	viewAngle[0] = objectBoss->GetradiusCos();
-
-	ImGui::Begin("player");
-	ImGui::SetWindowPos(ImVec2(0, 0));
-	ImGui::SetWindowSize(ImVec2(500, 200));
-	ImGui::InputFloat3("Pos", pPos);
-	ImGui::InputFloat3("TotalTime", Time);
-	ImGui::InputFloat3("TimeRate", Timerate);
-	ImGui::InputFloat3("PlayerHP", PHp);
-	ImGui::InputFloat3("Stamina",Stamina);
-	ImGui::InputFloat3("Rotation",rot);
-	ImGui::End();
-
-	ImGui::Begin("BOSS");
-	ImGui::SetWindowPos(ImVec2(600, 0));
-	ImGui::SetWindowSize(ImVec2(500, 200));
-	ImGui::InputFloat3("BOSSPos", Bpos);
-	ImGui::InputFloat3("BossDotVector", dotVec);
-	ImGui::InputFloat3("siakaku", viewAngle);
-	ImGui::InputFloat3("TotalTime", BTime);
-	ImGui::InputFloat3("TimeRate", BTimerate);
-	ImGui::InputInt("BOSSHP", HP);
-	ImGui::End();*/
-
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
 	//スプライトのパイプラインをセット
 	Sprite::SetPipelineState(dxCommon->GetCommandList());
 	// 前景スプライト描画前処理
 	Sprite::PreDraw(cmdList);
-	sprite3->Draw(dxCommon->GetCommandList());
-	spriteBossHp->Draw(dxCommon->GetCommandList());
-	sprite5->Draw(dxCommon->GetCommandList());
-	sprite4->Draw(dxCommon->GetCommandList());
+	spriteBossHpBack->Draw(dxCommon->GetCommandList());
+	spriteBossHpFront->Draw(dxCommon->GetCommandList());
+	spritePlayerHpBack->Draw(dxCommon->GetCommandList());
+	spritePlayerHpFront->Draw(dxCommon->GetCommandList());
 	spriteWarning->Draw(dxCommon->GetCommandList());
-
 	// スプライト描画後処理
 	Sprite::PostDraw();
 }
@@ -368,15 +309,9 @@ void GameScene::GotoEndScene(float Hp,int dead)
 	{
 		timer++;
 	
-		if (timer >= 10)
+		if (timer >= 25)
 		{
 			handle = EffekseerManager::StopEffect(handle);
-		}
-
-		//フェードアウト開始
-		if (timer >= 200)
-		{
-			ChangeSceneChengeFlag();
 		}
 
 		if (timer >= endTime)
@@ -399,12 +334,6 @@ void GameScene::GotoEndScene(float Hp,int dead)
 	{
 		timer++;
 		
-		//フェードアウト開始
-		if (timer >= 200)
-		{
-			ChangeSceneChengeFlag();
-		}
-
 		if (timer >= endTime)
 		{
 			timer = 0;
@@ -413,4 +342,64 @@ void GameScene::GotoEndScene(float Hp,int dead)
 			SceneManager::GetInstance()->ChangeScene("END");
 		}
 	}
+}
+
+void GameScene::LoadTexture(TextureManager* textureManager)
+{
+	tMng->spriteLoadTexture(0, L"Resources/textures/background.png");
+	tMng->spriteLoadTexture(1, L"Resources/textures/playerHpFront.png");
+	tMng->spriteLoadTexture(3, L"Resources/textures/bossHpFront.png");
+	tMng->spriteLoadTexture(4, L"Resources/textures/bossHpBack.png");
+	tMng->spriteLoadTexture(5, L"Resources/textures/playerHpBack.png");
+	tMng->spriteLoadTexture(6, L"Resources/textures/Warning.png");
+}
+
+void GameScene::ObjectInitialize(LevelData::ObjectData objectData, Object3d* object)
+{
+	// 座標
+	DirectX::XMFLOAT3 pos;
+	DirectX::XMStoreFloat3(&pos, objectData.translation);
+	object->SetPosition(pos);
+
+	// 回転角
+	DirectX::XMFLOAT3 rot;
+	DirectX::XMStoreFloat3(&rot, objectData.rotation);
+	object->SetRotation(rot);
+
+	// 座標
+	DirectX::XMFLOAT3 scale;
+	DirectX::XMStoreFloat3(&scale, objectData.scaling);
+	object->SetScale(scale);
+}
+
+void GameScene::SpriteInitialize(TextureManager* textureManager)
+{
+	//テクスチャ読み込み
+	LoadTexture(textureManager);
+
+	spriteBackGround = make_unique<Sprite>();
+	spriteBackGround->Initialize(0);
+	spriteBackGround->SetPosition(0, 0);
+	spriteBackGround->SetSize(1280, 1080);
+	spriteBossHpFront = make_unique<Sprite>();
+	spriteBossHpFront->Initialize(3);
+	spriteBossHpFront->SetSize(1000, 35);
+	spriteBossHpFront->SetPosition(0, -1);
+	spriteBossHpBack = make_unique<Sprite>();
+	spriteBossHpBack->Initialize(4);
+	spriteBossHpBack->SetPosition(0, 0);
+	spriteBossHpBack->SetSize(1000, 30);
+	spritePlayerHpFront = make_unique<Sprite>();
+	spritePlayerHpFront->Initialize(1);
+	spritePlayerHpFront->SetPosition(480, 690);
+	spritePlayerHpFront->SetSize(800, 30);
+	spritePlayerHpBack = make_unique<Sprite>();
+	spritePlayerHpBack->Initialize(5);
+	spritePlayerHpBack->SetPosition(480, 690);
+	spritePlayerHpBack->SetSize(800, 30);
+	spriteWarning = make_unique<Sprite>();
+	spriteWarning->Initialize(6);
+	spriteWarning->SetAlpha(0);
+	spriteWarning->SetPosition(350, 50);
+	spriteWarning->SetSize(600, 300);
 }

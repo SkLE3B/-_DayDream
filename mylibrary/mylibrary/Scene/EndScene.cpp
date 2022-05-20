@@ -49,6 +49,7 @@ void EndScene::Update()
 	{
 		end->ChengeFadeOutFlag();
 		ChangeSceneChengeFlag();
+		fog->FadeOut(0.01f);
 	}
 
 	//370

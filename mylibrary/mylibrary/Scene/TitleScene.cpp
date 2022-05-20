@@ -24,10 +24,11 @@ void TitleScene::Initialize(Direcx12Base* dxCommon, Input* input, AudioManager* 
 	//テクスチャ読み込み
 	tMng->spriteLoadTexture(6, L"Resources/textures/Title.png");
 
-	title = std::make_unique<Sprite>();
-	title->Initialize(6);
-	title->SetSize(1280, 720);
-	title->SetPosition(0,-20);
+	SpriteTitle = std::make_unique<Sprite>();
+	SpriteTitle->Initialize(6);
+	SpriteTitle->SetSize(1280, 720);
+	SpriteTitle->SetPosition(0,-20);
+	SpriteTitle->SetAlpha(1.0f);
 	time = 0;
 	time2 = 0;
 	fadeOutFlag = false;
@@ -35,12 +36,14 @@ void TitleScene::Initialize(Direcx12Base* dxCommon, Input* input, AudioManager* 
 
 void TitleScene::Update()
 {
+	fog->FadeIn(0.01f);
 	// Enterで指定のシーンへ
 	if (input->TriggerPush(DIK_SPACE) && !fadeOutFlag)
 	{
 		audio->PlayWave(L"Resources/sounds/button06 .wav");
 		fadeOutFlag = !fadeOutFlag;
-		title->ChengeFadeOutFlag();
+		//SpriteTitle->ChengeFadeOutFlag();
+		//fog->ChengeFadeOutFlag();
 	}
 
 	time2++;
@@ -52,10 +55,11 @@ void TitleScene::Update()
 	
 	if (fadeOutFlag)
 	{
+		SpriteTitle->Fadeout("ON");
 		time++;
 	}
 
-	if (time >= 200)
+	if (time >= 150)
 	{
 		fadeOutFlag = !fadeOutFlag;
 		time = 0;
@@ -77,7 +81,7 @@ void TitleScene::UIDraw()
 	Sprite::SetPipelineState(dxCommon->GetCommandList());
 	// 前景スプライト描画前処理
 	Sprite::PreDraw(cmdList);
-	title->Draw(dxCommon->GetCommandList());
+	SpriteTitle->Draw(dxCommon->GetCommandList());
 	// スプライト描画後処理
 	Sprite::PostDraw();
 }

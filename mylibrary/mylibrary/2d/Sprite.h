@@ -194,10 +194,13 @@ public://メンバ関数
 	/// フェードアウトフラグ切り替え
 	/// </summary>
 	/// <returns>フェードアウトフラグ</returns>
-	bool& ChengeFadeOutFlag() { return fadeOutFlag = !fadeOutFlag; 
-	}
+	bool& ChengeFadeOutFlag() { return fadeOutFlag = !fadeOutFlag; }
 
+	/// <summary>
+	/// アルファ値取得
+	/// </summary>
 	float getAlpha() { return Color.w; }
+
 
 	std::string getSwich(const std::string& swich) { return swich; }
 
