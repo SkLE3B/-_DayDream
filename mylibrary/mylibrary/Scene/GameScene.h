@@ -91,6 +91,9 @@ public:
 	void LoadTexture(TextureManager* textureManager);
 
 	void ObjectInitialize(LevelData::ObjectData objectData, Object3d* object);
+
+	void SetFile();
+
 private:
 	LevelData* levelData = nullptr;
 	//スプライト用
@@ -124,7 +127,7 @@ private:
 	std::shared_ptr<TouchableObject> object_Ground;
 
 	std::map<std::string, Model*> models;
-	std::vector<Object3d*> objects;
+	std::vector<std::shared_ptr<Object3d>> objects;
 	CollisionManager* collisionManager = nullptr;
 	Effekseer::Handle handle;
 

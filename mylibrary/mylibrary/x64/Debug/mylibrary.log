@@ -1,9 +1,9 @@
 ﻿  GameScene.cpp
 D:\就職作品\mylibrary\mylibrary\GameObject\Boss\BossBaseState.h(134,37): warning C4244: '初期化中': 'float' から 'const unsigned int' への変換です。データが失われる可能性があります。
-D:\就職作品\mylibrary\mylibrary\Scene\GameScene.cpp(194,13): warning C4244: '初期化中': 'float' から 'int' への変換です。データが失われる可能性があります。
-D:\就職作品\mylibrary\mylibrary\Scene\GameScene.cpp(195,15): warning C4244: '初期化中': 'float' から 'int' への変換です。データが失われる可能性があります。
-D:\就職作品\mylibrary\mylibrary\Scene\GameScene.cpp(196,28): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-D:\就職作品\mylibrary\mylibrary\Scene\GameScene.cpp(197,30): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-D:\就職作品\mylibrary\mylibrary\Scene\GameScene.cpp(203,16): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-D:\就職作品\mylibrary\mylibrary\Scene\GameScene.cpp(207,16): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+D:\就職作品\mylibrary\mylibrary\Scene\GameScene.cpp(162,13): warning C4244: '初期化中': 'float' から 'int' への変換です。データが失われる可能性があります。
+D:\就職作品\mylibrary\mylibrary\Scene\GameScene.cpp(163,15): warning C4244: '初期化中': 'float' から 'int' への変換です。データが失われる可能性があります。
+D:\就職作品\mylibrary\mylibrary\Scene\GameScene.cpp(164,28): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+D:\就職作品\mylibrary\mylibrary\Scene\GameScene.cpp(165,30): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+D:\就職作品\mylibrary\mylibrary\Scene\GameScene.cpp(171,16): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+D:\就職作品\mylibrary\mylibrary\Scene\GameScene.cpp(175,16): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
   mylibrary.vcxproj -> D:\就職作品\mylibrary\x64\Debug\mylibrary.exe

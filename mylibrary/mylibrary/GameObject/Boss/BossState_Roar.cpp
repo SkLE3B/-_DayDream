@@ -81,7 +81,7 @@ void BossState_Roar::Roar(Player* player, AudioManager* audio)
 			}
 		}
 
-		if (IsTimeOut(totalTime, 5.51f))
+		if (IsTimeOut(totalTime, 5.6f))
 		{
 			handle = EffekseerManager::StopEffect(handle);
 		}

@@ -30,7 +30,6 @@ void TitleScene::Initialize(Direcx12Base* dxCommon, Input* input, AudioManager* 
 	SpriteTitle->SetPosition(0,-20);
 	SpriteTitle->SetAlpha(1.0f);
 	time = 0;
-	time2 = 0;
 	fadeOutFlag = false;
 }			
 
@@ -42,24 +41,15 @@ void TitleScene::Update()
 	{
 		audio->PlayWave(L"Resources/sounds/button06 .wav");
 		fadeOutFlag = !fadeOutFlag;
-		//SpriteTitle->ChengeFadeOutFlag();
-		//fog->ChengeFadeOutFlag();
 	}
 
-	time2++;
-
-	if (time2 >= 60)
-	{
-		time2 = 0;
-	}
-	
 	if (fadeOutFlag)
 	{
 		SpriteTitle->Fadeout("ON");
 		time++;
 	}
 
-	if (time >= 150)
+	if (time >= 170)
 	{
 		fadeOutFlag = !fadeOutFlag;
 		time = 0;
