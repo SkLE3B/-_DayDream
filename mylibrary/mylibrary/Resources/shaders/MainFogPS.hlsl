@@ -53,6 +53,16 @@ float FractalSumNoise(float density, float2 uv)
 	return fn;
 }
 
+float RayleighPhaseFunction(float fCos2)
+{
+	return 3.0f / (16.0f * 3.1435) * (1.0f + fCos2);
+}
+
+float MiePhaseFunction(float g, float fCos)
+{
+	return (1 - g) * (1 - g) / (4.0f * 3.1435 * pow(1 + g * g - 2.0f * g * fCos, 1.5f));
+}
+
 float4 main(VSOutput input) : SV_TARGET
 {
 	 float4 texcolor = tex.Sample(smp,input.uv);
@@ -83,7 +93,18 @@ float4 main(VSOutput input) : SV_TARGET
 	 float diagonallyDownwardToTheRight = FractalSumNoise(density, input.uv + float2(timeX, timeX));
 	
 	 float  noise = toTheRight + diagonallyDownwardToTheRight * fogWeight;
-	 float4 fogColor = float4(noise ,noise, noise, 1);
-	 float4 outputColor = lerp(bgColor, fogColor, fogWeight);
+	 
+	 float sunCos = -0.14f;
+	 //float sunCos = float4(0.0f,-0.0f,0.0f,1.0f);
+	 const float betaPhaseR = RayleighPhaseFunction(sunCos * sunCos);
+	 const float betaPhaseM = MiePhaseFunction(-0.75, sunCos);
+	 float rayleighCoeff = 0.8f;
+	 float4 rayleighColor = float4(1, 0, 0, 1);
+	 float mieCoeff = 1.0f;
+	 float4 mieColor = float4(0, 0, 1, 1);
+	 float4 fogColor = (betaPhaseR * rayleighCoeff * rayleighColor + betaPhaseM * mieCoeff * mieColor) / (rayleighCoeff + mieCoeff);
+	 //float4 fogColor = float4(noise, noise, noise, 1);
+
+	 float4 outputColor = lerp(bgColor, fogColor + noise, fogWeight);
 	 return outputColor * FadeOut;
 }

@@ -40,6 +40,5 @@ private:
 	std::unique_ptr<Sprite> SpriteTitle;
 	int time;
 	bool fadeOutFlag;
-	int time2;
 };
 

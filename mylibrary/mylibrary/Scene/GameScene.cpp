@@ -80,47 +80,6 @@ void GameScene::Initialize(Direcx12Base* dxCommon, Input* input, AudioManager* a
 	model_AttackObject = FbxLoader::GetInstance()->LoadModelFromFile("Attack");
 	model_EnemyAttackObject = FbxLoader::GetInstance()->LoadModelFromFile("Esphere");
 
-	models.insert(std::make_pair("ground",  model_Ground));
-	models.insert(std::make_pair("boss",    model_Boss));
-	models.insert(std::make_pair("playerAttack", model_AttackObject));
-	models.insert(std::make_pair("EnemyAttack", model_EnemyAttackObject));
-
-	// レベルデータからオブジェクトを生成、配置
-	for (auto& objectData : levelData->objects) {
-		// ファイル名から登録済みモデルを検索
-		Model* model = nullptr;
-		decltype(models)::iterator it = models.find(objectData.fileName);
-		if (it != models.end()) {
-			model = it->second;
-		}
-
-		if (objectData.fileName == "ground")
-		{
-			shared_ptr<Object3d> newObject = TouchableObject::Create(model);
-			ObjectInitialize(objectData, newObject.get());
-			objects.push_back(newObject.get());
-		}
-		else if (objectData.fileName == "boss")
-		{
-			shared_ptr<Object3d> newObjectBoss = Boss::Create(model);
-			ObjectInitialize(objectData, newObjectBoss.get());
-			objects.push_back(newObjectBoss.get());
-
-		}
-		else if (objectData.fileName == "playerAttack")
-		{
-			shared_ptr<Object3d> newObjectAttackPlayer = AttackCollisionObject::Create(model);
-			ObjectInitialize(objectData, newObjectAttackPlayer.get());
-			objects.push_back(newObjectAttackPlayer.get());
-		}
-		else if (objectData.fileName == "EnemyAttack")
-		{
-			shared_ptr<Object3d> newObjectAttackEnemy = AttackEnemyCollisionObject::Create(model);
-			ObjectInitialize(objectData, newObjectAttackEnemy.get());
-			objects.push_back(newObjectAttackEnemy.get());
-		}
-	}
-
 	//3Dオブジェクト生成とモデルのセット
 	//FBX
 	object_Player = Player::Create(model_Player,dCamera);
@@ -220,6 +179,7 @@ void GameScene::Draw()
 	{
 		object_Player->Draw(cmdList);
 	}
+	
 	if (DrawBossCollisionFlag)
 	{
 		objectEAttack->Draw(cmdList);
@@ -370,6 +330,11 @@ void GameScene::ObjectInitialize(LevelData::ObjectData objectData, Object3d* obj
 	DirectX::XMFLOAT3 scale;
 	DirectX::XMStoreFloat3(&scale, objectData.scaling);
 	object->SetScale(scale);
+}
+
+void GameScene::SetFile()
+{
+
 }
 
 void GameScene::SpriteInitialize(TextureManager* textureManager)
