@@ -51,7 +51,6 @@ void GameBase::Initialize()
 	textureManager->Initialize(dxBase.get());
 
 	//インプット初期化
-	//input = make_unique<Input>();
 	input = Input::GetInstance();
 	input->Initialize(winApp->GetWndClass().hInstance, winApp->GetHwnd());
 

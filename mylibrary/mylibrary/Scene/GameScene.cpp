@@ -13,13 +13,14 @@
 #include "../Collision/SphereCollider.h"
 #include "../Collision/MeshCollider.h"
 #include "../Collision/CollisionManager.h"
-#include "../Player.h"
+#include "../GameObject/Player/Player.h"
 #include "../3d/TouchableObject.h"
 #include "../Collision/AttackCollisionObject.h"
 #include "../Math/Vector3.h"
 #include "../GameObject/Boss/BossBaseState.h"
 #include "../Scene/SceneManager.h"
 #include "../Base/LevelLoader.h"
+#include "../mylibrary/GameObject/Player/PlayerState_None.h"
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
@@ -95,7 +96,7 @@ void GameScene::Initialize(Direcx12Base* dxCommon, Input* input, AudioManager* a
 	objectAttack->SetPosition({10,0,10});
 	objectAttack->SetScale({ 4,4,4 });
 	objectEAttack = AttackEnemyCollisionObject::Create(model_EnemyAttackObject);
-	objectEAttack->SetPosition({ 10,5,30});
+	objectEAttack->SetPosition({10,-5,30});
 	objectEAttack->SetScale({ 4,4,4 });
 
 	state = "OFF";
@@ -150,11 +151,11 @@ void GameScene::Update()
 		state = "ON";
 	}
 
-	int bossHp = objectAttack->GetHP();
-	int playerHp = object_Player->GetPlayerHP();
+	float bossHp = objectAttack->GetHP();
+	float playerHp = object_Player->GetPlayerHP();
 	spriteBossHpBack->SetSize(bossHp, 30);
 	spritePlayerHpBack->SetSize(playerHp, 30);
-
+	
 	if (playerHp == 0)
 	{
 		EffekseerManager::SetScale(handle, { 5,5,5 });
@@ -277,6 +278,7 @@ void GameScene::GotoEndScene(float Hp,int dead)
 		if (timer >= endTime)
 		{
 			timer = 0;
+			object_Player->ChangeState(std::make_shared<PlayerState_None>());
 			//エンドシーンへ
 			SceneManager::GetInstance()->ChangeScene("END");
 			SceneManager::GetInstance()->SetSceneState(Scene::End);
@@ -307,8 +309,8 @@ void GameScene::GotoEndScene(float Hp,int dead)
 void GameScene::LoadTexture(TextureManager* textureManager)
 {
 	tMng->spriteLoadTexture(0, L"Resources/textures/background.png");
-	tMng->spriteLoadTexture(1, L"Resources/textures/playerHpFront.png");
-	tMng->spriteLoadTexture(3, L"Resources/textures/bossHpFront.png");
+	tMng->spriteLoadTexture(1, L"Resources/textures/playerHpFront2.png");
+	tMng->spriteLoadTexture(3, L"Resources/textures/bossHpFront2.png");
 	tMng->spriteLoadTexture(4, L"Resources/textures/bossHpBack.png");
 	tMng->spriteLoadTexture(5, L"Resources/textures/playerHpBack.png");
 	tMng->spriteLoadTexture(6, L"Resources/textures/Warning.png");

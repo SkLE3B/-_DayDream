@@ -10,7 +10,6 @@ void BossState_Rolling::Initialize()
 	totalTime = 0;
 	angle = 0;
 	timerFlag = false;
-	roarFlag = false;
 	Ppos = {};
 	EaseStart = {};
 	collisionFlag = false;

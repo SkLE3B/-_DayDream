@@ -34,6 +34,7 @@ bool Boss::Initialize()
 	}
 
 	lifeFlag = true;
+	roarFlag = false;
     ChangeState(std::make_shared<BossState_Wait>());
 	forwardVector = { 0,0,1 };
 	radius = 10.5f;
@@ -65,11 +66,6 @@ void Boss::Update(Player* player,AttackEnemyCollisionObject* AttackCollision, Au
 float& Boss::GetTime()
 {
 	return shared_bossState.get()->GetTime();
-}
-
-bool& Boss::GetRoarFlag()
-{
-	return shared_bossState.get()->GetRoarFlag(); 
 }
 
 bool& Boss::GetColFlag()

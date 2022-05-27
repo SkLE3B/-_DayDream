@@ -1,11 +1,11 @@
 #include "BossState_Roar.h"
 #include "BossState_LockOn.h"
 #include "BossState_Wait.h"
+#include "../mylibrary/GameObject/Player/PlayerState_RoarKnockBack.h"
 
 void BossState_Roar::Initialize()
 {
 	step = RoarStep::RoarStart;
-	roarFlag = false;
 	bai = 0.0f;
 	maxTime = 0.3f;//‘S‘ÌŽžŠÔ[s]
 	timeRate = 0;;
@@ -14,7 +14,6 @@ void BossState_Roar::Initialize()
 	angle = 0;
 	dotPos = 0;
 	timerFlag = false;
-	roarFlag = false;
 	Ppos = {};
 	EaseStart = {};
 	collisionFlag = false;
@@ -70,14 +69,10 @@ void BossState_Roar::Roar(Player* player, AudioManager* audio)
 				sa.z = sa.z * -1;
 			}
 
-			if (dotPos > 0.7f && sa.z < 30)
+			if (weak_boss.lock()->GetRoarFlag() == false && dotPos > 0.7f && sa.z < 30 )
 			{
-				roarFlag = !roarFlag;
-				player->RoarKnockBack(weak_boss.lock().get(),roarFlag,audio);
-			}
-			else
-			{
-				roarFlag = false;
+				weak_boss.lock()->ChangeRoarFlag();
+				player->ChangeState(std::make_shared<PlayerState_RoarKnockBack>());
 			}
 		}
 
@@ -86,8 +81,10 @@ void BossState_Roar::Roar(Player* player, AudioManager* audio)
 			handle = EffekseerManager::StopEffect(handle);
 		}
 		
-		if (IsTimeOut(totalTime, 39.0f))
+		//39.0f
+		if (IsTimeOut(totalTime, 30.0f))
 		{
+			weak_boss.lock()->ChangeRoarFlag();
 			ResetTimer();
 			step = RoarStep::RoarEnd;
 		}

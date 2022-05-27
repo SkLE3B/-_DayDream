@@ -1,7 +1,7 @@
 #pragma once
 #include "Camera.h"
 #include "../Input/Input.h"
-#include "../Player.h"
+#include "../mylibrary/GameObject/Player/Player.h"
 
 /// <summary>
 /// デバッグ用カメラ

@@ -2,7 +2,7 @@
 #include "../mylibrary/3d/Object3d.h"
 #include "../mylibrary/Math/Easing.h"
 #include "../mylibrary/Input/Input.h"
-#include "../mylibrary/Player.h"
+#include "../mylibrary/GameObject/Player/Player.h"
 #include "../mylibrary/Collision/SphereCollider.h"
 #include "../mylibrary/3d/AttackEnemyCollisionObject.h"
 #include "../mylibrary/Math/Matrix4.h"
@@ -64,7 +64,9 @@ public:
 
 	SphereCollider& GetSphereCollider() { return *sphereCollider;}
 
-	bool& GetRoarFlag();
+	bool& GetRoarFlag() { return roarFlag;};
+	bool ChangeRoarFlag() { return roarFlag = !roarFlag; }
+	bool IsRoarFlag() { return roarFlag; }
 	bool& GetColFlag();
 	void ChangeState(std::shared_ptr<BossBaseState> weak_bossState);
 	bool ChangeLifeFlag() { return lifeFlag = !lifeFlag; }
@@ -98,5 +100,6 @@ private:
 	bool            lifeFlag;                       //ライフフラグ
 	float           radius;                         //半径
 	Vector3         angleVector;                    //角度ベクトル
+	bool roarFlag;
 };
 

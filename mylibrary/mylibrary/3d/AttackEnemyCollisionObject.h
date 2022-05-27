@@ -2,7 +2,7 @@
 #include "Object3d.h"
 #include "../GameObject/Boss/Boss.h"
 #include "../Input/Input.h"
-#include "../player.h"
+#include "../mylibrary/GameObject/Player/Player.h"
 #include "../Audio/AudioManager.h"
 
 class Player;
@@ -28,6 +28,8 @@ public:
 	/// </summary>
 	/// <param name="player">プレイヤーインスタンス</param>
 	void Update(Boss* boss,Player* player, AudioManager* audio);
+
+	bool& ChangeCollisionFlag() { return collisionFlag = !collisionFlag; }
 
 private:
 	Input* input = Input::GetInstance();

@@ -1,7 +1,7 @@
 #pragma once
 #include "../3d/Object3d.h"
 #include "../3d/ParticleManager.h"
-#include "../player.h"
+#include "../mylibrary/GameObject/Player/Player.h"
 #include "../Math/ExNum.h"
 #include "../Audio/AudioManager.h"
 #include "../3d/EffekseerManager.h"
@@ -43,6 +43,12 @@ public:
 	bool& GetColFlag() { return collisionFlag; }
 	float GetHP() { return HP->rate() * 1000; }
 	bool& ChangeColFlag() { return collisionFlag = !collisionFlag; }
+
+	/// <summary>
+	/// 攻撃判定オブジェクト起動中かどうか
+	/// </summary>
+	/// <returns></returns>
+	bool& IsAttackCollsionOn() { return collisionFlag; }
 
 public:
 	static AttackCollisionObject* GetInstance();

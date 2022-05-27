@@ -8,7 +8,6 @@ void BossBaseState::Initialize()
 	totalTime = 0;
 	angle = 0;
 	timerFlag = false;
-	roarFlag = false;
 	collisionFlag = false;
 	Ppos = {};
 	EaseStart = {};
