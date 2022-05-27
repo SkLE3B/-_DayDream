@@ -2,6 +2,8 @@
 #include "../Collision/SphereCollider.h"
 #include "../Collision/CollisionAttribute.h"
 #include "../Collision/CollisionManager.h"
+#include "../mylibrary/GameObject/Player/PlayerState_RoarKnockBack.h"
+#include "../mylibrary/GameObject/Player/PlayerState_KnockBack.h"
 
 std::shared_ptr<AttackEnemyCollisionObject> AttackEnemyCollisionObject::Create(Model* model)
 {
@@ -68,10 +70,11 @@ void AttackEnemyCollisionObject::Update(Boss* boss,Player* player, AudioManager*
 	// 球と地形の交差を全検索
 	CollisionManager::GetInstance()->QuerySphere(*sphereCollider, &callbackAttack, COLLISION_ATTR_ALLIES);
 
-	if (boss->GetColFlag() && callbackAttack.flag == true)
+	//if (boss->GetRoarFlag() == false && callbackAttack.flag && collisionFlag)
+	if (boss->GetRoarFlag() == false && callbackAttack.flag)
 	{
-		roarFlag = true;
-		player->RoarKnockBack(boss, roarFlag,audio);
+		boss->ChangeRoarFlag();
+		player->ChangeState(std::make_shared<PlayerState_RoarKnockBack>());
 	}
 
 	// 行列の更新など

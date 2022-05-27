@@ -10,7 +10,7 @@
 #include "Collision/SphereCollider.h"
 #include "Collision/MeshCollider.h"
 #include "Collision/CollisionManager.h"
-#include "Player.h"
+#include "GameObject/Player/Player.h"
 #include "3d/TouchableObject.h"
 #include "Scene/AbstractSceneFactory.h"
 #include "Scene/SceneFactory.h"

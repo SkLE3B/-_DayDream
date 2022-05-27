@@ -16,7 +16,6 @@ void BossState_LockOn::Initialize()
 	totalTime = 0;
 	angle = 0;
 	timerFlag = false;
-	roarFlag = false;
 	Ppos = {};
 	collisionFlag = false;
 	EaseStart = {};

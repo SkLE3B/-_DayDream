@@ -1,6 +1,6 @@
 #pragma once
 #include "Boss.h"
-#include "../mylibrary/Player.h"
+#include "../mylibrary/GameObject/Player/Player.h"
 #include "../mylibrary/Base/Timer.h"
 #include "../mylibrary/3d/AttackEnemyCollisionObject.h"
 #include "../mylibrary/Audio/AudioManager.h"
@@ -104,8 +104,9 @@ public:
 
 	BossStatePattern GetStatePattern() { return statePattern; }
 	float& GetTime() { return totalTime; }
-	bool& GetRoarFlag() { return roarFlag; }
+	//bool& GetRoarFlag() { return roarFlag; }
 	bool& GetCollisionFlag() { return collisionFlag; }
+	//bool& ChangeRoarFlag() { return roarFlag = !roarFlag; }
 
 	void SetBoss(std::weak_ptr<Boss> weakBoss) { weak_boss = weakBoss; }
 protected:
@@ -140,6 +141,6 @@ protected:
 	bool timerFlag;    //タイマーが起動しているかどうか
 	float angle;
 	float bai; //距離
-	bool roarFlag;
+	//bool roarFlag;
 	bool collisionFlag;
 };

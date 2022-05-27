@@ -63,7 +63,7 @@ void BossState_Breth::Breth(Player* player, AttackEnemyCollisionObject* ememyCol
 		walrdPos = warldMat.transformNormal(forwardVector, warldMat);
 		walrdPos = { walrdPos.x * (bai + 10), 2 ,walrdPos.z * (bai + 10) };
 		PositionCorrection(ememyCollision, walrdPos);
-		handle = EffekseerManager::PlayEffect(u"Resources/Effects/Bite.efk", { weak_boss.lock()->GetPosition().x + walrdPos.x, weak_boss.lock()->GetPosition().y + walrdPos.y, weak_boss.lock()->GetPosition().z + walrdPos.z });
+		handle = EffekseerManager::PlayEffect(u"Resources/Effects/Bite.efk", { ememyCollision->GetPosition().x + walrdPos.x,ememyCollision->GetPosition().y + walrdPos.y,ememyCollision->GetPosition().z + walrdPos.z });
 		
 		if (IsTimeOut(totalTime, 0.01f))
 		{

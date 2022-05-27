@@ -78,7 +78,7 @@ void AttackCollisionObject::Update(Player* player, ParticleManager* particleMan,
 	// ‹…‚Æ’nŒ`‚ÌŒğ·‚ğ‘SŒŸõ
 	CollisionManager::GetInstance()->QuerySphere(*sphereCollider, &callbackAttack, COLLISION_ATTR_ENEMYS);
 	
-	if (player->GetColFlag() && callbackAttack.Hit && !soundFlag)
+	if (IsAttackCollsionOn() && callbackAttack.Hit && !soundFlag)
 	{
 		callbackAttack.Hit = false;
 		HP->add(-0.5f);

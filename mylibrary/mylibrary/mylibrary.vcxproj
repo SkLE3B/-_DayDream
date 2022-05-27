@@ -165,6 +165,7 @@
     <ClInclude Include="Audio\AudioManager.h" />
     <ClInclude Include="Base\Direcx12Base.h" />
     <ClInclude Include="Base\FlameRate.h" />
+    <ClInclude Include="Base\HelperTimer.h" />
     <ClInclude Include="Base\LevelLoader.h" />
     <ClInclude Include="Base\SafeDelete.h" />
     <ClInclude Include="Base\Timer.h" />
@@ -196,6 +197,16 @@
     <ClInclude Include="GameObject\Boss\BossState_Rolling.h" />
     <ClInclude Include="GameObject\Boss\BossState_Rush.h" />
     <ClInclude Include="GameObject\Boss\BossState_Wait.h" />
+    <ClInclude Include="GameObject\Player\PlayerState_RoarKnockBack.h" />
+    <ClInclude Include="GameObject\Player\Player.h" />
+    <ClInclude Include="GameObject\Player\PlayerBaseState.h" />
+    <ClInclude Include="GameObject\Player\PlayerState_AvoidLeft.h" />
+    <ClInclude Include="GameObject\Player\PlayerState_AvoidRight.h" />
+    <ClInclude Include="GameObject\Player\PlayerState_Move.h" />
+    <ClInclude Include="GameObject\Player\PlayerState_Attack.h" />
+    <ClInclude Include="GameObject\Player\PlayerState_KnockBack.h" />
+    <ClInclude Include="GameObject\Player\PlayerState_None.h" />
+    <ClInclude Include="GameObject\Player\PlayerState_Rush.h" />
     <ClInclude Include="Input\Gamepad.h" />
     <ClInclude Include="Input\Input.h" />
     <ClInclude Include="Math\Easing.h" />
@@ -204,7 +215,6 @@
     <ClInclude Include="Math\Matrix4.h" />
     <ClInclude Include="Math\Quaternion.h" />
     <ClInclude Include="Math\Vector3.h" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="PostEffect\Fog.h" />
     <ClInclude Include="PostEffect\PostEffect.h" />
     <ClInclude Include="Scene\AbstractSceneFactory.h" />
@@ -235,6 +245,7 @@
     <ClCompile Include="Audio\AudioManager.cpp" />
     <ClCompile Include="Base\Direcx12Base.cpp" />
     <ClCompile Include="Base\FlameRate.cpp" />
+    <ClCompile Include="Base\HelperTimer.cpp" />
     <ClCompile Include="Base\LevelLoader.cpp" />
     <ClCompile Include="Base\windowsApi.cpp" />
     <ClCompile Include="Camera\BackCamera.cpp" />
@@ -258,6 +269,16 @@
     <ClCompile Include="GameObject\Boss\BossState_Rolling.cpp" />
     <ClCompile Include="GameObject\Boss\BossState_Rush.cpp" />
     <ClCompile Include="GameObject\Boss\BossState_Wait.cpp" />
+    <ClCompile Include="GameObject\Player\PlayerState_RoarKnockBack.cpp" />
+    <ClCompile Include="GameObject\Player\Player.cpp" />
+    <ClCompile Include="GameObject\Player\PlayerBaseState.cpp" />
+    <ClCompile Include="GameObject\Player\PlayerState_AvoidLeft.cpp" />
+    <ClCompile Include="GameObject\Player\PlayerState_Attack.cpp" />
+    <ClCompile Include="GameObject\Player\PlayerState_AvoidRight.cpp" />
+    <ClCompile Include="GameObject\Player\PlayerState_KnockBack.cpp" />
+    <ClCompile Include="GameObject\Player\PlayerState_Move.cpp" />
+    <ClCompile Include="GameObject\Player\PlayerState_None.cpp" />
+    <ClCompile Include="GameObject\Player\PlayerState_Rush.cpp" />
     <ClCompile Include="Input\Gamepad.cpp" />
     <ClCompile Include="Input\Input.cpp" />
     <ClCompile Include="main.cpp" />
@@ -267,7 +288,6 @@
     <ClCompile Include="Math\Matrix4.cpp" />
     <ClCompile Include="Math\Quaternion.cpp" />
     <ClCompile Include="Math\Vector3.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="PostEffect\Fog.cpp" />
     <ClCompile Include="PostEffect\PostEffect.cpp" />
     <ClCompile Include="Scene\AbstractSceneFactory.cpp" />
