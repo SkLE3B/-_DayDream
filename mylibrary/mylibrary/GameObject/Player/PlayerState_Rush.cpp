@@ -1,6 +1,7 @@
 #include "PlayerState_Rush.h"
 #include "PlayerState_None.h"
 #include "PlayerState_KnockBack.h"
+#include "PlayerState_RoarKnockBack.h"
 
 void PlayerState_Rush::Initialize()
 {
@@ -18,7 +19,7 @@ void PlayerState_Rush::Update(Camera* camera, AttackCollisionObject* AttackCol, 
 		AttackCol->ChangeColFlag();
 		step = RushStep::DuringRush;
 		handle = EffekseerManager::PlayEffect(u"Resources/Effects/movePlayer.efk", { weak_player.lock()->GetPosition().x,
-			weak_player.lock()->GetPosition().y + 5, weak_player.lock()->GetPosition().z * weak_player.lock()->GetMoveDirection().z});
+			weak_player.lock()->GetPosition().y + 5, weak_player.lock()->GetPosition().z});
 	}
 
 	if (&HelperTimer::IsTimerOn && step == RushStep::DuringRush)

@@ -95,7 +95,6 @@ float4 main(VSOutput input) : SV_TARGET
 	 float  noise = toTheRight + diagonallyDownwardToTheRight * fogWeight;
 	 
 	 float sunCos = -0.14f;
-	 //float sunCos = float4(0.0f,-0.0f,0.0f,1.0f);
 	 const float betaPhaseR = RayleighPhaseFunction(sunCos * sunCos);
 	 const float betaPhaseM = MiePhaseFunction(-0.75, sunCos);
 	 float rayleighCoeff = 0.8f;
@@ -103,7 +102,6 @@ float4 main(VSOutput input) : SV_TARGET
 	 float mieCoeff = 1.0f;
 	 float4 mieColor = float4(0, 0, 1, 1);
 	 float4 fogColor = (betaPhaseR * rayleighCoeff * rayleighColor + betaPhaseM * mieCoeff * mieColor) / (rayleighCoeff + mieCoeff);
-	 //float4 fogColor = float4(noise, noise, noise, 1);
 
 	 float4 outputColor = lerp(bgColor, fogColor + noise, fogWeight);
 	 return outputColor * FadeOut;

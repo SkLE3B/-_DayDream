@@ -10,7 +10,6 @@ void PlayerState_RoarKnockBack::Update(Camera* camera, AttackCollisionObject* At
 {
 	if (boss->GetRoarFlag() && step == RoarKnockBackStep::RoarKnockBackStart)
 	{
-		weak_player.lock()->GetHp()->add(-50);//ボスに触れた時ダメージ
 		float knockBackDistance = 35.0f;
 		Vector3 distination = weak_player.lock()->GetPosition() - boss->GetPosition();
 		distination.Normalize();
@@ -33,7 +32,6 @@ void PlayerState_RoarKnockBack::Update(Camera* camera, AttackCollisionObject* At
 			weak_player.lock()->ResetAnimation();
 			HelperTimer::ResetTimer();
 			weak_player.lock()->PlayAnimation(0, 0);
-			//boss->ChangeRoarFlag();
 			weak_player.lock()->ChangeState(std::make_shared<PlayerState_None>());
 		}
 	}

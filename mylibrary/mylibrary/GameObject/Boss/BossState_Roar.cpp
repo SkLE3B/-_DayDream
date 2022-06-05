@@ -38,61 +38,68 @@ void BossState_Roar::Roar(Player* player, AudioManager* audio)
 		audio->PlayWave(L"Resources/sounds/Roar.wav");
 		weak_boss.lock()->PlayAnimation(2,1);
 		TimerStart(&time,&timerFlag);
-		step = RoarStep::DuringRoar;
+		step = RoarStep::DuringRoarStart;
+	}
+
+	if (timerFlag && step == RoarStep::DuringRoarStart)
+	{
+		AdvanceTimer(maxTime);
+
+		if (IsTimeOut(totalTime, 10.0f))
+		{
+			warldMat = weak_boss.lock()->GetMatWorld();
+			walrdPos = warldMat.transformNormal(forwardVector, warldMat);
+			walrdPos.Normalize();
+
+			const Vector3 effectPosition = { 10,0,40 };
+			walrdPos2 = warldMat.transformNormal(forwardVector, warldMat);
+			walrdPos2 = { walrdPos2.x * effectPosition.x, 2,walrdPos2.z * effectPosition.z};
+			EffekseerManager::SetPosition(handle, weak_boss.lock()->GetPosition() + walrdPos2);
+			handle = EffekseerManager::PlayEffect(u"Resources/Effects/ron.efk", { weak_boss.lock()->GetPosition().x + walrdPos2.x, weak_boss.lock()->GetPosition().y + walrdPos2.y, weak_boss.lock()->GetPosition().z + walrdPos2.z });
+			EffekseerManager::SetScale(handle, { 2,2,2 });
+			Ppos = player->GetPosition() - weak_boss.lock()->GetPosition();
+			Ppos.Normalize();
+			dotPos = walrdPos.Dot(Ppos);
+			sa = player->GetPosition() - weak_boss.lock()->GetPosition();
+			step = RoarStep::DuringRoar;
+			ResetTimer();
+			TimerStart(&time, &timerFlag);
+		}
 	}
 
 	if (timerFlag && step == RoarStep::DuringRoar)
 	{
 		AdvanceTimer(maxTime);
 
-		if (IsTimeOut(totalTime, 5.5f))
+		if (sa.z < 0)
 		{
-			bai += 15.0f;
-			warldMat = weak_boss.lock()->GetMatWorld();
-			walrdPos = warldMat.transformNormal(forwardVector, warldMat);
-			walrdPos.Normalize();
-
-			walrdPos2 = warldMat.transformNormal(forwardVector, warldMat);
-			walrdPos2 = { walrdPos2.x * (bai + 10), 2,walrdPos2.z * (bai + 10) };
-
-			EffekseerManager::SetPosition(handle, weak_boss.lock()->GetPosition() + walrdPos2);
-			handle = EffekseerManager::PlayEffect(u"Resources/Effects/Ban.efk", { weak_boss.lock()->GetPosition().x + walrdPos2.x, weak_boss.lock()->GetPosition().y + walrdPos2.y, weak_boss.lock()->GetPosition().z + walrdPos2.z });
-			EffekseerManager::SetScale(handle, { 2,2,2 });
-
-			Ppos = player->GetPosition() - weak_boss.lock()->GetPosition();
-			Ppos.Normalize();
-			dotPos = walrdPos.Dot(Ppos);
-			sa = player->GetPosition() - weak_boss.lock()->GetPosition();
-
-			if (sa.z < 0)
-			{
-				sa.z = sa.z * -1;
-			}
-
-			if (weak_boss.lock()->GetRoarFlag() == false && dotPos > 0.7f && sa.z < 30 )
-			{
-				weak_boss.lock()->ChangeRoarFlag();
-				player->ChangeState(std::make_shared<PlayerState_RoarKnockBack>());
-			}
+			sa.z = sa.z * -1;
 		}
 
-		if (IsTimeOut(totalTime, 5.6f))
+		if (weak_boss.lock()->GetRoarFlag() == false && dotPos > 0.7f && sa.z < 80)
+		{
+			weak_boss.lock()->ChangeRoarFlag();
+			player->GetHp()->add(-50);
+			player->ChangeState(std::make_shared<PlayerState_RoarKnockBack>());
+			step = RoarStep::RoarEnd;
+		}
+
+		if (IsTimeOut(totalTime, 5.0f))
 		{
 			handle = EffekseerManager::StopEffect(handle);
 		}
-		
-		//39.0f
-		if (IsTimeOut(totalTime, 30.0f))
+
+		if (IsTimeOut(totalTime, 10.0f))
 		{
 			weak_boss.lock()->ChangeRoarFlag();
-			ResetTimer();
 			step = RoarStep::RoarEnd;
 		}
 	}
 
 	if (step == RoarStep::RoarEnd)
 	{
+		ResetTimer();
+		weak_boss.lock()->ResetAnimation();
 		weak_boss.lock()->ChangeState(std::make_shared<BossState_Wait>());
 	}
 }
-

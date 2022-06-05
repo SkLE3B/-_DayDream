@@ -30,7 +30,6 @@ public:
 	/// 3Dオブジェクト生成
 	/// </summary>
 	/// <returns></returns>
-	//static Player* Create(Model* model = nullptr);
 	static std::shared_ptr<Player> Create(Model* model, Camera* camera);
 
 public:
@@ -46,6 +45,8 @@ public:
 		static bool IsFlag() { return flag; }
 
 		static bool FalseFlag() { return flag = !flag; }
+
+		static bool FlagInit() { return flag = false; }
 
 		Sphere* sphere = nullptr;
 		DirectX::XMVECTOR move = {};
@@ -114,14 +115,11 @@ public:
 		return rotationMatrix;
 	}
 
-	void ResetCamera(Boss* boss, Camera* camera);
-	float& GetTimeRate() { return timeRate;}
-	float& GetTime() { return totalTime; }
-	float GetPlayerHP() { return HP->get();}
 	Vector3& GetDirection() { return direction; }
+	void ResetCamera(Boss* boss, Camera* camera);
+	float GetPlayerHP() { return HP->get();}
 	float& GetrotY() { return rotY; }
 	bool& GetColFlag() { return collisionFlag; }
-	bool& GetTimerFlag() { return timerFlag; }
 	bool& GetLifeFlag() { return lifeFlag; }
 	/// <summary>
 	/// getter
@@ -150,32 +148,18 @@ private:
 private:
 	static BossHIt bossCallback;
 	std::shared_ptr<PlayerBaseState> shared_PlayerState;
-	//貯める係数
-	int charge;
 	// マウスの入力を取得
 	Input* input = Input::GetInstance();
 	Input::MouseMove mouseMove = input->GetMouseMove();
-	Timer* time;
 	//落下判定
 	bool onGround = true;
 	//生存フラグ
 	bool lifeFlag = true;
 	// 落下ベクトル
 	DirectX::XMVECTOR fallV;
-	//速度
-	float velocity = 0.3f;;
-	XMVECTOR velocityR = { velocity,0,0,0 };
-	XMVECTOR velocityL = { -velocity,0,0,0 };
-	XMVECTOR velocityU = { 0,0,velocity,0 };
-	XMVECTOR velocityD = { 0,0,-velocity,0 };
-	bool isAvoid = false;
-	float lapseTime;
-	Vector3 prePos;
 	//現在向いてる方向
 	Vector3 direction;
 	Vector3 target;
-	Vector3 vec;
-	float walkSpeed = 0.55f; //移動速度	
 	float rotateSpeed = 3.5f;//回転速度
 	//カメラ回転中
 	bool rotCamera;
@@ -190,31 +174,10 @@ private:
 	Vector3 cameraTarget;
 	XMMATRIX camMatWorld;
 	XMMATRIX rotationMatrix;
-
-	//時間系
-	float maxTime;//全体時間[s]
-	float timeRate;//何％時間が進んだか(率)
-	float elapsedTime;
-	float totalTime;
-
-	Vector3 DashStart;
-	Vector3 DashEnd;
-	Vector3 correctionPos;//攻撃判定補正座標
-
-	float stamina;//スタミナ
-	float radius;//半径
+	float radius;//コライダー半径
 	float distance;
 	float rotY;
-
 	bool collisionFlag;//攻撃用コリジョンを出現させるかどうか
-	bool timerFlag;    //タイマーが起動しているかどうか
-	bool actionFlag;   //プレイヤーが行動しているかどうか
-	bool dashFlag;     //ダッシュ中かどうか
-	float phi = 0;
-	float theta = 0;
-
-	Vector3 AttColPos;//当たり判定の座標
-
 	ExNum* HP;//プレイヤーのHP
 	Effekseer::Handle handle;//エフェクトハンドル
 };

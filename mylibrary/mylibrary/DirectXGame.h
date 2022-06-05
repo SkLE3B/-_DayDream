@@ -23,4 +23,3 @@ public:
 	void PostEffectSwitch(const std::string& sceneName);
 private:
 };
-

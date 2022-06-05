@@ -4,6 +4,7 @@
 #include "../mylibrary/Base/Timer.h"
 #include "../mylibrary/3d/AttackEnemyCollisionObject.h"
 #include "../mylibrary/Audio/AudioManager.h"
+#include "../mylibrary/Base/HelperTimer.h"
 
 enum class BossStatePattern
 {
@@ -104,10 +105,7 @@ public:
 
 	BossStatePattern GetStatePattern() { return statePattern; }
 	float& GetTime() { return totalTime; }
-	//bool& GetRoarFlag() { return roarFlag; }
 	bool& GetCollisionFlag() { return collisionFlag; }
-	//bool& ChangeRoarFlag() { return roarFlag = !roarFlag; }
-
 	void SetBoss(std::weak_ptr<Boss> weakBoss) { weak_boss = weakBoss; }
 protected:
 	weak_ptrBoss weak_boss;
@@ -141,6 +139,5 @@ protected:
 	bool timerFlag;    //タイマーが起動しているかどうか
 	float angle;
 	float bai; //距離
-	//bool roarFlag;
 	bool collisionFlag;
 };
