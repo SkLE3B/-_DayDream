@@ -571,7 +571,9 @@ void Fog::CreateGraphicsPipelineState()
 
 void Fog::TimeCount()
 {
-	time.x -= 0.005f;
+	//霧の移動量
+	const float movement = 0.005f;
+	time.x -= movement;
 }
 
 void Fog::FadeOut(const float value)

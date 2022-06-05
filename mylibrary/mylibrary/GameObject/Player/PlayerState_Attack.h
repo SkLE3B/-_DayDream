@@ -24,5 +24,6 @@ public:
 
 private:
     AttackStep step;
+    Effekseer::Handle handle;//エフェクトハンドル
 };
 

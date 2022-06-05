@@ -351,7 +351,7 @@ void GameScene::SpriteInitialize(TextureManager* textureManager)
 	spriteBossHpFront = make_unique<Sprite>();
 	spriteBossHpFront->Initialize(3);
 	spriteBossHpFront->SetSize(1000, 35);
-	spriteBossHpFront->SetPosition(0, -1);
+	spriteBossHpFront->SetPosition(0, -5);
 	spriteBossHpBack = make_unique<Sprite>();
 	spriteBossHpBack->Initialize(4);
 	spriteBossHpBack->SetPosition(0, 0);

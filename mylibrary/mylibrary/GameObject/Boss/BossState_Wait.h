@@ -1,6 +1,12 @@
 #pragma once
 #include "BossBaseState.h"
 
+enum class WaitStep
+{
+	WaitStart,
+	DuringWait
+};
+
 class BossState_Wait : public BossBaseState
 {
 public:
@@ -16,6 +22,7 @@ public:
 	void Finalize() override;
 
 private:
+	WaitStep step;
 	int changeStateTimer;
 };
 

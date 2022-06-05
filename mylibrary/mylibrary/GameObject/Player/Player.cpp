@@ -49,26 +49,14 @@ bool Player::Initialize(Camera* camera)
 	}
 
 	Player::camera = camera;
-	prePos = position;
 	direction = { 0,0,1 };
-	stamina = 2.0f;
 	cameraRotCount = 0;
 	rotCamera = false;
-	totalTime = 0;
 	radY = 0;
-	maxTime = 0.3f;//全体時間[s]
-	timeRate;
-	elapsedTime;
 	// コライダーの追加
 	radius = 2.0f;
 	SetCollider(new SphereCollider(XMVECTOR({0,radius,0,0 }), radius),COLLISION_ATTR_ALLIES);
-	lapseTime = 0.0f;
     distance = 10.0f;
-	collisionFlag = false; 
-	timerFlag = false;
-	actionFlag = false;
-	dashFlag = false;
-	correctionPos = { 0,0,0 };
 	HP = new ExNum(800.0f, 0.0f, 800.0f);
 
 	cameraDirectionZ = Vector3(camMatWorld.r[2].m128_f32[0], 0, camMatWorld.r[2].m128_f32[2]).Normalize();
@@ -288,10 +276,6 @@ void Player::MoveCamera(Camera* camera,Boss* boss)
 
 void Player::OnCollision(const CollisionInfo& info)
 {
-	//PlayAnimation();
-	//DebugText::GetInstance()->Print("Collision detected",100,100,2.0f);
-	//isPlay = false;
-	////if (info.collider->GetShapeType() == COLLISIONSHAPE_MESH) return;
 }
 
 void Player::MovementRangeLimit()

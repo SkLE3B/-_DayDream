@@ -70,9 +70,9 @@ void AttackEnemyCollisionObject::Update(Boss* boss,Player* player, AudioManager*
 	// ‹…‚Æ’nŒ`‚ÌŒğ·‚ğ‘SŒŸõ
 	CollisionManager::GetInstance()->QuerySphere(*sphereCollider, &callbackAttack, COLLISION_ATTR_ALLIES);
 
-	//if (boss->GetRoarFlag() == false && callbackAttack.flag && collisionFlag)
 	if (boss->GetRoarFlag() == false && callbackAttack.flag)
 	{
+		player->GetHp()->add(-50);
 		boss->ChangeRoarFlag();
 		player->ChangeState(std::make_shared<PlayerState_RoarKnockBack>());
 	}

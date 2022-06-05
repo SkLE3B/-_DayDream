@@ -19,11 +19,18 @@ void PlayerState_None::Update(Camera* camera, AttackCollisionObject* AttackCol, 
 		weak_player.lock()->PlayAnimation(0, 0);
 		boss->GetRoarFlag() = false;
 		AttackCol->GetColFlag() = false;
+		Player::BossHIt::FlagInit();
 		step = NoneStep::DuringNone;
 	}
 	
 	if (step == NoneStep::DuringNone)
 	{
+		//HPが0になったらゲームオーバー
+		if (weak_player.lock()->GetHp()->isEmpty())
+		{
+			weak_player.lock()->PlayerDead();
+		}
+
 		//ノックバック
 		if (Player::BossHIt::IsFlag())
 		{
@@ -54,13 +61,6 @@ void PlayerState_None::Update(Camera* camera, AttackCollisionObject* AttackCol, 
 		{
 			weak_player.lock()->ChangeState(std::make_shared<PlayerState_Rush>());
 		}
-
-	    //HPが0になったらゲームオーバー
-	    if (weak_player.lock()->GetHp()->isEmpty())
-	    {
-			weak_player.lock()->ChangeState(std::make_shared<PlayerStateMove>());
-	    	weak_player.lock()->PlayerDead();
-	    }
 	}
 }
 

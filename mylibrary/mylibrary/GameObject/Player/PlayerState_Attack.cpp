@@ -20,6 +20,10 @@ void PlayerState_Attack::Update(Camera* camera, AttackCollisionObject* AttackCol
 		PositionCorrection(AttackCol, GetCorrectionPos(6.0f, correctionPos));
 		DecisionDistance(weak_player.lock()->GetMoveDirection() * 30);
 		AttackCol->ChangeColFlag();
+		handle = EffekseerManager::PlayEffect(u"Resources/Effects/gen.efk", {
+			weak_player.lock()->GetPosition().x - (weak_player.lock()->GetCameraDirectionX().Normalize().x), weak_player.lock()->GetPosition().y + 5,
+			weak_player.lock()->GetPosition().z });
+		EffekseerManager::SetScale(handle,{3,3,3});
 		step = AttackStep::DuringAttack;
 	}	
 
@@ -32,6 +36,7 @@ void PlayerState_Attack::Update(Camera* camera, AttackCollisionObject* AttackCol
 		
 		if (HelperTimer::IsEasingOver())
 		{
+			handle = EffekseerManager::StopEffect(handle);
 			weak_player.lock()->ResetAnimation();
 			HelperTimer::ResetTimer();
 			weak_player.lock()->PlayAnimation(0, 0);

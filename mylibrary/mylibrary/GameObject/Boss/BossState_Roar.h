@@ -5,6 +5,7 @@
 enum class RoarStep
 {
 	RoarStart,
+	DuringRoarStart,
 	DuringRoar,
 	RoarEnd,
 };
