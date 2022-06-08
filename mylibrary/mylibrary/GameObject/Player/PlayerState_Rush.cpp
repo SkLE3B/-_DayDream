@@ -17,6 +17,7 @@ void PlayerState_Rush::Update(Camera* camera, AttackCollisionObject* AttackCol, 
 		weak_player.lock()->PlayAnimation(1, 0);
 		audio->PlayWave(L"Resources/sounds/Drill.wav");
 		timer.Reset();
+		AttackCol->SetPosition(weak_player.lock()->GetPosition());
 		DecisionDistance(weak_player.lock()->GetMoveDirection() * 60);
 		AttackCol->ChangeColFlag();
 		step = RushStep::DuringRush;
@@ -45,7 +46,7 @@ void PlayerState_Rush::Update(Camera* camera, AttackCollisionObject* AttackCol, 
 		{
 			handle = EffekseerManager::StopEffect(handle);
 			AttackCol->ChangeColFlag();
-			AttackCol->SetPosition({0,-5,0});
+			AttackCol->SetPosition(weak_player.lock()->GetPosition());
 			Player::BossHIt::FalseFlag();
 			weak_player.lock()->ChangeState(std::make_shared<PlayerState_KnockBack>());
 		}

@@ -143,3 +143,9 @@ void EffekseerManager::SetRotation(const Effekseer::Handle& arg_handle, const Ve
 {
 	manager->SetRotation(arg_handle, arg_rotation.x, arg_rotation.y, arg_rotation.z);
 }
+
+Vector3 EffekseerManager::ConvertVector3(const Effekseer::Vector3D& vector)
+{
+	Vector3 convert = { vector.X,vector.Y,vector.Z };
+	return convert;
+}

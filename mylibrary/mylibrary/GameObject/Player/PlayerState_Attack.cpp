@@ -48,6 +48,7 @@ void PlayerState_Attack::Update(Camera* camera, AttackCollisionObject* AttackCol
 	//ノックバック
 	if (Player::BossHIt::IsFlag())
 	{
+		AttackCol->SetPosition(weak_player.lock()->GetPosition());
 		AttackCol->ChangeColFlag();
 		Player::BossHIt::FalseFlag();
 		HelperTimer::ResetTimer();

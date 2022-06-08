@@ -47,12 +47,12 @@ void BossState_Roar::Roar(Player* player, AudioManager* audio)
 			walrdPos2 = warldMat.transformNormal(forwardVector, warldMat);
 			walrdPos2 = { walrdPos2.x * effectPosition.x, 2,walrdPos2.z * effectPosition.z};
 			EffekseerManager::SetPosition(handle, weak_boss.lock()->GetPosition() + walrdPos2);
-			handle = EffekseerManager::PlayEffect(u"Resources/Effects/ron.efk", { weak_boss.lock()->GetPosition().x + walrdPos2.x, weak_boss.lock()->GetPosition().y + walrdPos2.y, weak_boss.lock()->GetPosition().z + walrdPos2.z });
-			EffekseerManager::SetScale(handle, { 2,2,2 });
+			handle = EffekseerManager::PlayEffect(u"Resources/Effects/roar.efk", { weak_boss.lock()->GetPosition().x + walrdPos2.x, weak_boss.lock()->GetPosition().y + walrdPos2.y, weak_boss.lock()->GetPosition().z + walrdPos2.z });
+			EffekseerManager::SetScale(handle, { 6,6,6 });
 			Ppos = player->GetPosition() - weak_boss.lock()->GetPosition();
 			Ppos.Normalize();
 			dotPos = walrdPos.Dot(Ppos);
-			sa = player->GetPosition() - weak_boss.lock()->GetPosition();
+			CalculatedPos = player->GetPosition() - weak_boss.lock()->GetPosition();
 			step = RoarStep::DuringRoar;
 			time.Reset();
 		}
@@ -60,12 +60,12 @@ void BossState_Roar::Roar(Player* player, AudioManager* audio)
 
 	if (time.IsTimer() && step == RoarStep::DuringRoar)
 	{
-		if (sa.z < 0)
+		if (CalculatedPos.z < 0)
 		{
-			sa.z = sa.z * -1;
+			CalculatedPos.z = CalculatedPos.z * -1;
 		}
 
-		if (weak_boss.lock()->GetRoarFlag() == false && dotPos > 0.7f && sa.z < 80)
+		if (weak_boss.lock()->GetRoarFlag() == false && dotPos > 0.7f && CalculatedPos.z < 80)
 		{
 			weak_boss.lock()->ChangeRoarFlag();
 			player->GetHp()->add(-50);

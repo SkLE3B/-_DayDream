@@ -36,7 +36,7 @@ bool AttackCollisionObject::Initialize(Model* model, Camera* camera)
 	// コライダーの追加
 	SphereCollider* collider = new SphereCollider(DirectX::XMVECTOR{ radius ,radius ,radius ,0});
 	SetCollider(collider, COLLISION_ATTR_ARTS);
-	HP = new ExNum(100,0,100);
+	HP = new ExNum(70,0,70);
 
 	return true;
 }

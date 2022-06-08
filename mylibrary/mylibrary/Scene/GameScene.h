@@ -130,6 +130,7 @@ private:
 	std::vector<std::shared_ptr<Object3d>> objects;
 	CollisionManager* collisionManager = nullptr;
 	Effekseer::Handle handle;
+	Effekseer::Handle bossHandle;
 
 	std::string swich;
 

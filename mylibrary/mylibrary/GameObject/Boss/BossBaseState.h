@@ -93,7 +93,7 @@ protected:
 	Matrix4 warldMat;//ワールド座標行列
 	Vector3 walrdPos;//ワールド座標ベクトル
 	Vector3 walrdPos2;//ワールド座標ベクトル
-	Vector3 sa;
+	Vector3 CalculatedPos;//プレイヤーの座標からボスの座標を引いた座標
 
 	const unsigned int STATE_COUNT = (unsigned int)BossStatePattern::END;
 	const unsigned int NEAR_BEGIN = (unsigned int)BossStatePattern::BITING;

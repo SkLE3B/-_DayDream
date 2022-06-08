@@ -88,7 +88,7 @@ void GameScene::Initialize(Direcx12Base* dxCommon, Input* input, AudioManager* a
 	object_Player->SetRotation({ 0,0,0 });
 	object_Ground = TouchableObject::Create(model_Ground);
 	object_Ground->SetPosition({ 0,0,0 });
-	object_Ground->SetScale({ 8,8,8 });
+	object_Ground->SetScale({ 24,24,24 });
 	objectBoss = Boss::Create(model_Boss);
 	objectBoss->SetPosition({0,0,30});
 	objectBoss->SetRotation({0,180,0});
@@ -164,6 +164,9 @@ void GameScene::Update()
 	}
 	if (bossHp == 0)
 	{
+		EffekseerManager::SetScale(bossHandle, { 5,5,5 });
+		bossHandle = EffekseerManager::PlayEffect(u"Resources/Effects/Ban.efk", 
+			{ objectBoss->GetPosition().x, objectBoss->GetPosition().y, objectBoss->GetPosition().z });
 		GotoEndScene(bossHp, 2);
 	}
 }
@@ -296,6 +299,11 @@ void GameScene::GotoEndScene(float Hp,int dead)
 	{
 		timer++;
 		
+		if (timer >= 2)
+		{
+			bossHandle = EffekseerManager::StopEffect(bossHandle);
+		}
+
 		if (timer >= endTime)
 		{
 			timer = 0;
