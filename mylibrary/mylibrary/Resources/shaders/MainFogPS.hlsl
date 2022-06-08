@@ -78,7 +78,6 @@ float4 main(VSOutput input) : SV_TARGET
 	 //–¶‚Ì”Z‚³
 	 float fog_Scale = 1.0f;
 	 //–¶Œ¸”—¦(ƒJƒƒ‰‚Æ‚Ì‰e‹¿‹——£)
-	 //float g = 0.004f;
 	 float g = 0.02f;
 
 	 fogWeight += fog_Scale * max(0.0f, 1.0f - exp(-g * viewPos.z));
@@ -98,7 +97,7 @@ float4 main(VSOutput input) : SV_TARGET
 	 const float betaPhaseR = RayleighPhaseFunction(sunCos * sunCos);
 	 const float betaPhaseM = MiePhaseFunction(valueG, sunCos);
 	 float rayleighCoeff = 0.025f;
-	 float4 rayleighColor = float4(1, 1, 1, 1);
+	 float4 rayleighColor = float4(0, 0, 1, 1);
 	 float mieCoeff = 0.025f;
 	 float4 mieColor = float4(1, 1, 1, 1);
 	 float4 fogColor = (betaPhaseR * rayleighCoeff * rayleighColor + betaPhaseM * mieCoeff * mieColor) / (rayleighCoeff + mieCoeff);

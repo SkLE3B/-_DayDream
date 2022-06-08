@@ -281,7 +281,7 @@ void Player::OnCollision(const CollisionInfo& info)
 void Player::MovementRangeLimit()
 {
 	/// 移動境界線
-	const int range = 550;
+	const int range = 2300;
 	if (position.x >= range)
 	{
 		position.x = range;

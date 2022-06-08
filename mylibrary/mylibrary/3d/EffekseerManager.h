@@ -70,10 +70,17 @@ public:
 	static void SetRotation(const Effekseer::Handle& arg_handle, const Vector3& arg_rotation);
 
 	/// <summary>
-	/// 
+	/// 座標getter
 	/// </summary>
-	/// <param name="camera"></param>
-	static void MoveCamera(Camera* camera);
+	/// <returns></returns>
+	static Effekseer::Vector3D& GetPosition() { return g_position; }
+	
+	/// <summary>
+	//  Vector3に変換
+	/// </summary>
+	/// <param name="vector">Vector3D型座標</param>
+	/// <returns>Vector3型座標</returns>
+	static Vector3 ConvertVector3(const Effekseer::Vector3D& vector);
 
 private://静的メンバ変数
 //画面クリアカラー

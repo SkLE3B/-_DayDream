@@ -1,6 +1,6 @@
 ﻿D:\�A�E��i\mylibrary\mylibrary\Resources\shaders\MainFogPS.hlsl(69,9-42): warning X3206: implicit truncation of vector type
-D:\�A�E��i\mylibrary\mylibrary\Resources\shaders\MainFogPS.hlsl(98,28-65): warning X3206: 'RayleighPhaseFunction': implicit truncation of vector type
-D:\�A�E��i\mylibrary\mylibrary\Resources\shaders\MainFogPS.hlsl(99,28-59): warning X3206: 'MiePhaseFunction': implicit truncation of vector type
+D:\�A�E��i\mylibrary\mylibrary\Resources\shaders\MainFogPS.hlsl(97,28-65): warning X3206: 'RayleighPhaseFunction': implicit truncation of vector type
+D:\�A�E��i\mylibrary\mylibrary\Resources\shaders\MainFogPS.hlsl(98,28-59): warning X3206: 'MiePhaseFunction': implicit truncation of vector type
   
   compilation object save succeeded; see D:\就職作品\mylibrary\x64\Release\MainFogPS.cso
   mylibrary.vcxproj -> D:\就職作品\mylibrary\x64\Release\mylibrary.exe

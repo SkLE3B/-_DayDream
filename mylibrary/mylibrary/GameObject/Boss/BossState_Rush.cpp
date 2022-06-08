@@ -43,7 +43,7 @@ void BossState_Rush::Rush(Player* player, AudioManager* audio)
 		const float MoveFlame = 6.0f;
 		EasingMove(weak_boss.lock()->GetPosition(), MoveFlame, player);
 		weak_boss.lock()->GetPosition();
-		
+	
 		if (time.IsEasingOver())
 		{
 			distance = 100.0f;
