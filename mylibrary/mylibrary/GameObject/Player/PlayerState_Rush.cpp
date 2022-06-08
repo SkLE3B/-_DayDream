@@ -6,15 +6,17 @@
 void PlayerState_Rush::Initialize()
 {
 	step = RushStep::RushStart;
+	timer.SetMaxTime(2.09f);
 }
 
 void PlayerState_Rush::Update(Camera* camera, AttackCollisionObject* AttackCol, Boss* boss, AudioManager* audio)
 {
+	timer.Update();
 	if (step == RushStep::RushStart)
 	{
 		weak_player.lock()->PlayAnimation(1, 0);
 		audio->PlayWave(L"Resources/sounds/Drill.wav");
-		HelperTimer::TimerStart();
+		timer.Reset();
 		DecisionDistance(weak_player.lock()->GetMoveDirection() * 60);
 		AttackCol->ChangeColFlag();
 		step = RushStep::DuringRush;
@@ -22,18 +24,16 @@ void PlayerState_Rush::Update(Camera* camera, AttackCollisionObject* AttackCol, 
 			weak_player.lock()->GetPosition().y + 5, weak_player.lock()->GetPosition().z});
 	}
 
-	if (&HelperTimer::IsTimerOn && step == RushStep::DuringRush)
+	if (timer.IsTimer() && step == RushStep::DuringRush)
 	{
 		const float AttackFlame2 = 2.09f;
 		Vector3 correctionPos = { 0,2,0 };
-		HelperTimer::AdvanceTimer(AttackFlame2);
 		Easing(weak_player.lock()->GetPosition(), AttackFlame2);
 		PositionCorrection(AttackCol, GetCorrectionPos(2.0f, correctionPos));
 		
-		if (HelperTimer::IsEasingOver())
+		if (timer.IsEasingOver())
 		{
 			handle = EffekseerManager::StopEffect(handle);
-			HelperTimer::ResetTimer();
 			weak_player.lock()->ResetAnimation();
 			weak_player.lock()->PlayAnimation(0, 0);
 			AttackCol->ChangeColFlag();
@@ -45,8 +45,8 @@ void PlayerState_Rush::Update(Camera* camera, AttackCollisionObject* AttackCol, 
 		{
 			handle = EffekseerManager::StopEffect(handle);
 			AttackCol->ChangeColFlag();
+			AttackCol->SetPosition({0,-5,0});
 			Player::BossHIt::FalseFlag();
-			HelperTimer::ResetTimer();
 			weak_player.lock()->ChangeState(std::make_shared<PlayerState_KnockBack>());
 		}
 	}

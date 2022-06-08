@@ -545,6 +545,9 @@
     <ClCompile Include="GameObject\Player\PlayerState_RoarKnockBack.cpp">
       <Filter>ソース ファイル\GameObject\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Base\Timer.cpp">
+      <Filter>ソース ファイル\Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\BasicPixelShader.hlsl">

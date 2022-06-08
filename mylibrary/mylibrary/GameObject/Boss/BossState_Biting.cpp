@@ -4,22 +4,16 @@
 void BossState_Biting::Initialize()
 {
 	step = BiteStep::BiteStart();
-	bai = 0.0f;
-	maxTime = 0.3f;//全体時間[s]
-	timeRate = 0;;
-	elapsedTime = 0;
-	totalTime = 0;
-	angle = 0;
-	timerFlag = false;
-	collisionFlag = false;
-	Ppos = {};
-	EaseStart = {};
-	EaseEnd = {};
+	distance = 10.0f;
+	velocity = 2.5f;
+	maxTime = 40.0f;//全体時間[s]
 	forwardVector = { 0,0,1 };
+	time.SetMaxTime(maxTime);
 }
 
 void BossState_Biting::Update(Player* player, AttackEnemyCollisionObject* ememyCollision, SphereCollider* collider, AudioManager* audio)
 {
+	time.Update();
 	Biting(player, ememyCollision,audio);
 	collider->Update();
 }
@@ -30,51 +24,49 @@ void BossState_Biting::Finalize()
 
 void BossState_Biting::Biting(Player* player, AttackEnemyCollisionObject* ememyCollision,AudioManager* audio)
 {
-	Vector3 pos = { 0,2,0 };
 	if (step == BiteStep::BiteStart)
 	{
 		weak_boss.lock()->PlayAnimation(3,1);
-		TimerStart(&time, &timerFlag);
+		time.Reset();
 		step = BiteStep::DuringBite;
 	}
 
-	if (timerFlag && step == BiteStep::DuringBite)
+	if (time.IsTimer() && step == BiteStep::DuringBite)
 	{
-		AdvanceTimer(maxTime);
-
-		if (IsTimeOut(totalTime, 3.6f))
+		if (time.IsTimeOut(3.6f))
 		{
 			audio->PlayWave(L"Resources/sounds/Bite.wav");
-			ResetTimer();
-			TimerStart(&time, &timerFlag);
-			collisionFlag = !collisionFlag;
+			time.Reset();
+			ememyCollision->ChangeCollisionFlag();
 			ememyCollision->SetPosition(weak_boss.lock()->GetPosition());
 			step = BiteStep::BiteEnd;
 		}
 	}
 
-	if (timerFlag && step == BiteStep::BiteEnd)
+	if (time.IsTimer() && step == BiteStep::BiteEnd)
 	{		
 		warldMat = weak_boss.lock()->GetMatWorld();
-		AdvanceTimer(maxTime);
-
-		bai += 2.5f;
+		distance += velocity;
 		walrdPos = warldMat.transformNormal(forwardVector, warldMat);
-		walrdPos = { walrdPos.x * (bai + 10), 2 ,walrdPos.z * (bai + 10) };
+		walrdPos = { walrdPos.x * distance, 2 ,walrdPos.z * distance};
 		PositionCorrection(ememyCollision, walrdPos);
-		handle = EffekseerManager::PlayEffect(u"Resources/Effects/scroll.efk", { weak_boss.lock()->GetPosition().x + walrdPos.x, weak_boss.lock()->GetPosition().y + walrdPos.y, weak_boss.lock()->GetPosition().z + walrdPos.z });
+		handle = EffekseerManager::PlayEffect(u"Resources/Effects/scroll.efk", 
+			{ weak_boss.lock()->GetPosition().x + walrdPos.x, weak_boss.lock()->GetPosition().y + walrdPos.y, 
+			weak_boss.lock()->GetPosition().z + walrdPos.z });
 		EffekseerManager::SetScale(handle, { 3,3,3 });
 
-		if (IsTimeOut(totalTime, 0.00001f))
+		if (time.IsTimeOut(0.12f))
 		{
 			handle = EffekseerManager::StopEffect(handle);
 		}
 
-		if (IsTimeOut(totalTime, 10.0f))
+		if (time.IsTimeOut(maxTime))
 		{
-			ResetTimer();
-			collisionFlag = !collisionFlag;
-			bai = 0.5f;
+			//敵の球に当たって無い場合フラグをoffにする。
+			if (ememyCollision->GetCollisionFlag())
+			{
+				ememyCollision->ChangeCollisionFlag();
+			}
 			weak_boss.lock()->ChangeState(std::make_shared<BossState_Wait>());
 		}
 	}

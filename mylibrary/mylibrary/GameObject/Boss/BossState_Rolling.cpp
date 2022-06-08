@@ -5,19 +5,16 @@ void BossState_Rolling::Initialize()
 {
 	step = RollingStep::RollingStart;
 	maxTime = 0.3f;//‘S‘ÌŠÔ[s]
-	timeRate = 0;;
-	elapsedTime = 0;
-	totalTime = 0;
-	angle = 0;
-	timerFlag = false;
 	Ppos = {};
 	EaseStart = {};
 	collisionFlag = false;
 	EaseEnd = {};
+	time.SetMaxTime(12.0f);
 }
 
 void BossState_Rolling::Update(Player* player, AttackEnemyCollisionObject* ememyCollision, SphereCollider* collider, AudioManager* audio)
 {
+	time.Update();
 	Rolling();
 	collider->Update();
 }
@@ -32,20 +29,18 @@ void BossState_Rolling::Rolling()
 	{
 		DecisionDistance(Ppos.x, Ppos.z);
 		angle = weak_boss.lock()->GetRotation().y;
-		TimerStart(&time, &timerFlag);
+		time.Reset();
 		step = RollingStep::DuringRolling;
 	}
 
-	if (timerFlag && step == RollingStep::DuringRolling)
+	if (time.IsTimer() && step == RollingStep::DuringRolling)
 	{
 		const float rollingFlame = 12.0f;
-		AdvanceTimer(rollingFlame);
 		EasingRolling(rollingFlame,weak_boss.lock()->GetRotation());
 
-		if (IsEasingOver())
+		if (time.IsEasingOver())
 		{
 			weak_boss.lock()->GetRotation().y = weak_boss.lock()->GetRotation().y - 360;
-			ResetTimer();
 			weak_boss.lock()->ChangeState(std::make_shared<BossState_Wait>());
 		}
 	}

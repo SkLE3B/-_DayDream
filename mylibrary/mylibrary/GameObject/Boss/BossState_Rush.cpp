@@ -6,21 +6,15 @@ void BossState_Rush::Initialize()
 {
 	step = RushStep::RushStart;
 	maxTime = 0.3f;//‘S‘ÌŠÔ[s]
-	timeRate = 0;;
-	elapsedTime = 0;
-	totalTime = 0;
-	angle = 0;
-	timerFlag = false;
 	Ppos = {};
-	collisionFlag = false;
-	EaseStart = {};
-	EaseEnd = {};
-	bai = 100.0f;
+	distance = 100.0f;
 	forwardVector = { 0,0,1 };
+	time.SetMaxTime(6.0f);
 }
 
 void BossState_Rush::Update(Player* player, AttackEnemyCollisionObject* ememyCollision, SphereCollider* collider, AudioManager* audio)
 {
+	time.Update();
 	Rush(player,audio);
 	collider->Update();
 }
@@ -36,25 +30,23 @@ void BossState_Rush::Rush(Player* player, AudioManager* audio)
 		audio->PlayWave(L"Resources/sounds/Rush.wav");
 		warldMat = weak_boss.lock()->GetMatWorld();
 		walrdPos = warldMat.transformNormal(forwardVector, warldMat);
-		walrdPos = {walrdPos.x * bai, 0 ,walrdPos.z * bai};
+		walrdPos = {walrdPos.x * distance, 0 ,walrdPos.z * distance};
 
-		TimerStart(&time, &timerFlag);
 		Ppos = player->GetPosition();
 		DecisionDistance(walrdPos.x + Ppos.x,walrdPos.z  + Ppos.z);
+		time.Reset();
 		step = RushStep::RushEnd;
 	}
 		
-	if (timerFlag && step == RushStep::RushEnd)
+	if (time.IsTimer() && step == RushStep::RushEnd)
 	{
 		const float MoveFlame = 6.0f;
-		AdvanceTimer(MoveFlame);
 		EasingMove(weak_boss.lock()->GetPosition(), MoveFlame, player);
 		weak_boss.lock()->GetPosition();
-
-		if (IsEasingOver())
+		
+		if (time.IsEasingOver())
 		{
-			bai = 100.0f;
-			ResetTimer();
+			distance = 100.0f;
 			weak_boss.lock()->ChangeState(std::make_shared<BossState_Wait>());
 		}
 	}

@@ -11,20 +11,14 @@ void BossState_LockOn::Initialize()
 {
 	step = LockOnStep::LockOnStart;
 	maxTime = 0.3f;//‘S‘ÌŽžŠÔ[s]
-	timeRate = 0;;
-	elapsedTime = 0;
-	totalTime = 0;
-	angle = 0;
-	timerFlag = false;
 	Ppos = {};
-	collisionFlag = false;
-	EaseStart = {};
-	EaseEnd = {};
 	distanceBoundary = 40;
+	time.SetMaxTime(5.0f);
 }
 
 void BossState_LockOn::Update(Player* player, AttackEnemyCollisionObject* ememyCollision, SphereCollider* collider, AudioManager* audio)
 {
+	time.Update();
 	LockOn(player);
 	collider->Update();
 }
@@ -38,38 +32,29 @@ void BossState_LockOn::LockOn(Player* player)
 	if (step == LockOnStep::LockOnStart)
 	{
 		Ppos = player->GetPosition();
-		TimerStart(&time,&timerFlag);
+		time.Reset();
 		DecisionDistance(Ppos.x, Ppos.z);
 		step = LockOnStep::DuringLockOn;
 	}
 
-	if (timerFlag && step == LockOnStep::DuringLockOn)
+	if (time.IsTimer() && step == LockOnStep::DuringLockOn)
 	{
 		const float MoveFlame = 2.0f;
 
-		AdvanceTimer(MoveFlame);
-
 		Vector3 bbpos = weak_boss.lock()->GetPosition();
-
 		EasingRot(bbpos, MoveFlame, player,weak_boss.lock()->GetRotation());
 
-		if (IsEasingOver())
+		if (time.IsTimeOut(2.0f))
 		{
-			ResetTimer();
+			time.Reset();
 			step = LockOnStep::LockOnEnd;
-			TimerStart(&time, &timerFlag);
 		}
 	}
 
-	if (timerFlag && step == LockOnStep::LockOnEnd)
+	if (time.IsTimer() && step == LockOnStep::LockOnEnd)
 	{
-		const float MoveFlame = 5.0f;
-
-		AdvanceTimer(MoveFlame);
-
-		if (IsEasingOver())
+		if (time.IsTimeOut(5.0f))
 		{
-			ResetTimer();
 			SelectState(player);
 		}
 	}

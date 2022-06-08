@@ -1,12 +1,11 @@
 #include "BossState_Wait.h"
 #include "BossState_LockOn.h"
-#include "BossState_BackStep.h"
-#include "BossState_Roar.h"
+#include "BossState_Rolling.h"
+#include "BossState_Breth.h"
 
 void BossState_Wait::Initialize()
 {
 	changeStateTimer = 0;
-	collisionFlag = false;
 	step = WaitStep::WaitStart;
 }
 

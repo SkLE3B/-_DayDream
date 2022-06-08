@@ -63,11 +63,6 @@ void Boss::Update(Player* player,AttackEnemyCollisionObject* AttackCollision, Au
 	Object3d::Update();
 }
 
-float& Boss::GetTime()
-{
-	return shared_bossState.get()->GetTime();
-}
-
 bool& Boss::GetColFlag()
 {
 	return shared_bossState.get()->GetCollisionFlag();

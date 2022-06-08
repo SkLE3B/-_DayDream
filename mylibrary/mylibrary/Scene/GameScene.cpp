@@ -105,13 +105,13 @@ void GameScene::Initialize(Direcx12Base* dxCommon, Input* input, AudioManager* a
 	fog->SetAlpha(0.0f);
 	fog->ResetFade(1.0f, fog->GetFadeOutFlag());
 	this->fog = fog;
-	fog->SetAlpha(0.3f);
+	fog->SetAlpha(0.2f);
 	swich = "ON";
 }
 
 void GameScene::Update()
 {
-	if (fog->Morethan(0.3f))
+	if (fog->Morethan(0.2f))
 	{
 		fog->FadeIn(0.01f);
 	}
@@ -173,7 +173,7 @@ void GameScene::Draw()
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
 	const bool DrawFlag = object_Player->GetColFlag();//当たり判定描画フラグ
-	const bool DrawBossCollisionFlag = objectBoss->GetColFlag();
+	const bool DrawBossCollisionFlag = objectEAttack->GetCollisionFlag();
 
 	//3Dオブジェクトの描画
 	if (object_Player->GetLifeFlag())

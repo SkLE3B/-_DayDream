@@ -52,7 +52,6 @@ public:
 
 	//SetterGetter
 	float& GetTimeRate() { return timeRate; }
-	float& GetTime();
 	float& GetAngle() { return angle; }
 	Vector3& Getresult() { return moveVector_position; }
 

@@ -8,9 +8,9 @@ void PlayerBaseState::DecisionDistance(Vector3 EashEnd)
 
 void PlayerBaseState::Easing(Vector3& position, const float maxTime)
 {
-	position.x = Easing::EaseOutQuint(Start.x, End.x, maxTime, HelperTimer::GetTotalTime());
+	position.x = Easing::EaseOutQuint(Start.x, End.x, maxTime, timer.GetCurrentTimer());
 
-	position.z = Easing::EaseOutQuint(Start.z, End.z, maxTime, HelperTimer::GetTotalTime());
+	position.z = Easing::EaseOutQuint(Start.z, End.z, maxTime, timer.GetCurrentTimer());
 }
 
 void PlayerBaseState::PositionCorrection(AttackCollisionObject* AttackCol, const Vector3 AddPos)

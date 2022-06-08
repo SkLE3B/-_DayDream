@@ -5,22 +5,15 @@
 void BossState_Breth::Initialize()
 {
 	step = BrethStep::BrethStart();
-	bai = 0.0f;
-	maxTime = 0.3f;//全体時間[s]
-	timeRate = 0;;
-	elapsedTime = 0;
-	totalTime = 0;
-	angle = 0;
-	timerFlag = false;
-	collisionFlag = false;
-	Ppos = {};
-	EaseStart = {};
-	EaseEnd = {};
+	distance = 5.0f;
+	velocity = 5.5f;
 	forwardVector = { 0,0,1 };
+	time.SetMaxTime(15.0f);
 }
 
 void BossState_Breth::Update(Player* player, AttackEnemyCollisionObject* ememyCollision, SphereCollider* collider, AudioManager* audio)
 {
+	time.Update();
 	Breth(player, ememyCollision,audio);
 	collider->Update();
 }
@@ -31,51 +24,48 @@ void BossState_Breth::Finalize()
 
 void BossState_Breth::Breth(Player* player, AttackEnemyCollisionObject* ememyCollision, AudioManager* audio)
 {
-	Vector3 pos = { 0,2,0 };
 	if (step == BrethStep::BrethStart)
 	{
 		audio->PlayWave(L"Resources/sounds/Breth.wav");
 		weak_boss.lock()->PlayAnimation(1,1);
-		TimerStart(&time, &timerFlag);
+		time.Reset();
 		step = BrethStep::DuringBreth;
 	}
 	
-	if (timerFlag && step == BrethStep::DuringBreth)
-	{
-		AdvanceTimer(maxTime);
-					
-		if (IsTimeOut(totalTime, 10.0f))
+	if (time.IsTimer() && step == BrethStep::DuringBreth)
+	{					
+		if (time.IsTimeOut(10.0f))
 		{
-			ResetTimer();
-			ememyCollision->SetPosition(weak_boss.lock()->GetPosition());
-			TimerStart(&time, &timerFlag);
-			collisionFlag = !collisionFlag;
+			time.Reset();
+			ememyCollision->SetPosition(weak_boss.lock()->GetPosition() * distance);
+			ememyCollision->ChangeCollisionFlag();
 			step = BrethStep::BrethEnd;
 		}
 	}
 	
-	if (timerFlag && step == BrethStep::BrethEnd)
+	if (time.IsTimer() && step == BrethStep::BrethEnd)
 	{
-		warldMat = weak_boss.lock()->GetMatWorld();
-		AdvanceTimer(maxTime);
-	
-		bai += 5.5f;
+		warldMat = weak_boss.lock()->GetMatWorld();	
+		distance += velocity;
 		walrdPos = warldMat.transformNormal(forwardVector, warldMat);
-		walrdPos = { walrdPos.x * (bai + 10), 2 ,walrdPos.z * (bai + 10) };
+		walrdPos = { walrdPos.x * distance, 2 ,walrdPos.z * distance };
 		PositionCorrection(ememyCollision, walrdPos);
-		handle = EffekseerManager::PlayEffect(u"Resources/Effects/Bite.efk", { ememyCollision->GetPosition().x + walrdPos.x,ememyCollision->GetPosition().y + walrdPos.y,ememyCollision->GetPosition().z + walrdPos.z });
+		handle = EffekseerManager::PlayEffect(u"Resources/Effects/Bite.efk", 
+			{ ememyCollision->GetPosition().x + walrdPos.x,
+			ememyCollision->GetPosition().y + walrdPos.y,ememyCollision->GetPosition().z + walrdPos.z });
 		
-		if (IsTimeOut(totalTime, 0.01f))
+		if (time.IsTimeOut(1.0f))
 		{
 			handle = EffekseerManager::StopEffect(handle);
 		}
 
-		if (IsTimeOut(totalTime, 15.0f))
+		if (time.IsTimeOut(40.05f))
 		{
-			ResetTimer();
-			collisionFlag = !collisionFlag;
-			bai = 1.0f;
-			step = BrethStep::BrethStart;
+			//敵の球に当たって無い場合フラグをoffにする。
+			if (ememyCollision->GetCollisionFlag())
+			{
+				ememyCollision->ChangeCollisionFlag();
+			}
 			weak_boss.lock()->ChangeState(std::make_shared<BossState_Wait>());
 		}
 	}

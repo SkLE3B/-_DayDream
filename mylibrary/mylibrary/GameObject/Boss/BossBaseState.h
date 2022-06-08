@@ -73,38 +73,7 @@ public:
 	/// <param name="player"></param>
 	void EasingRolling(const float maxTime,Vector3 rot);
 
-	//<summary>
-    //タイマーを起動する
-    //</summary>
-	void TimerStart(Timer* time, bool* timerFlag);
-
-	/// <summary>
-	/// タイマーを進める
-	/// </summary>
-	/// <param name="maxTime"></param>
-	void AdvanceTimer(const float maxTime);
-
-	/// <summary>
-	/// タイマーを止める
-	/// </summary>
-	void ResetTimer();
-
-	/// <summary>
-	/// タイマーがMaxTimeに到達したかどうか
-	/// </summary>
-	/// <param name="TotalTime">カウントしているタイマー</param>
-	/// <param name="Maxtime">終了フレーム</param>
-	/// <returns></returns>
-	bool IsTimeOut(float TotalTime, const float Maxtime) const;
-
-	/// <summary>
-	/// イージングが終わったかどうか
-	/// </summary>
-	/// <returns></returns>
-	bool IsEasingOver() const;
-
 	BossStatePattern GetStatePattern() { return statePattern; }
-	float& GetTime() { return totalTime; }
 	bool& GetCollisionFlag() { return collisionFlag; }
 	void SetBoss(std::weak_ptr<Boss> weakBoss) { weak_boss = weakBoss; }
 protected:
@@ -132,12 +101,9 @@ protected:
 	const unsigned int FAR_BEGIN = (unsigned int)BossStatePattern::RUSH;
 	const unsigned int CHENGEMAXTIME = 600.0f;
 
-	float maxTime;   //全体時間[s]
-	float timeRate;  //何％時間が進んだか(率)
-	float elapsedTime;//何％時間が進んだか(値)
-	float totalTime;  //進めた時間
-	bool timerFlag;    //タイマーが起動しているかどうか
 	float angle;
-	float bai; //距離
+	float velocity;//速度
+	float maxTime;   //全体時間[s]
+	float distance; //距離
 	bool collisionFlag;
 };

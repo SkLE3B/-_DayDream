@@ -27,37 +27,38 @@ void PlayerStateMove::Update(Camera* camera, AttackCollisionObject* AttackCol, B
 		weak_player.lock()->ChangeState(std::make_shared<PlayerState_KnockBack>());
 	}
 
+	//¶ˆÚ“®
 	if (input->IsPush(DIK_A)) {
 		Move(weak_player.lock()->GetCameraDirectionX() * -1);
 	}
-	
+	//‰EˆÚ“®
 	if (input->IsPush(DIK_D)) {
 		Move(weak_player.lock()->GetCameraDirectionX());
 	}
-	
+	//ãˆÚ“®
 	if (input->IsPush(DIK_W)) {
 		Move(weak_player.lock()->GetCameraDirectionZ());
 	}
-	
+	//‰ºˆÚ“®
 	if (input->IsPush(DIK_S)) {
 		Move(weak_player.lock()->GetCameraDirectionZ() * -1);
 	}
-
+	//ˆÚ“®‚µ‚½Œã
 	if (input->RelesePush(DIK_A) || input->RelesePush(DIK_D) || input->RelesePush(DIK_W) || input->RelesePush(DIK_S))
 	{
 		weak_player.lock()->ChangeState(std::make_shared<PlayerState_None>());
 	}
-
+	//‰E‚É”ğ‚¯‚é
     else if (input->TriggerPush(DIK_E))
 	{
 		weak_player.lock()->ChangeState(std::make_shared<PlayerState_AvoidRight>());
 	}
-
+	//¶‚É”ğ‚¯‚é
 	else if (input->TriggerPush(DIK_Q))
 	{
 		weak_player.lock()->ChangeState(std::make_shared<PlayerState_AvoidLeft>());
 	}
-
+	//UŒ‚
 	else if (input->TriggerPush(DIK_DOWN))
 	{
 		weak_player.lock()->ChangeState(std::make_shared<PlayerState_Attack>());
