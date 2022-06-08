@@ -3,12 +3,7 @@
 void BossBaseState::Initialize()
 {
 	maxTime = 0.3f;//‘S‘ÌŠÔ[s]
-	timeRate = 0;;
-	elapsedTime = 0;
-	totalTime = 0;
 	angle = 0;
-	timerFlag = false;
-	collisionFlag = false;
 	Ppos = {};
 	EaseStart = {};
 	EaseEnd = {};
@@ -31,16 +26,16 @@ void BossBaseState::PositionCorrection(AttackEnemyCollisionObject* AttackCol, co
 
 void BossBaseState::EasingMove(Vector3& position, const float maxTime, Player* player)
 {
-	position.x = Easing::EaseOutQuart(EaseStart.x, EaseEnd.x, maxTime, totalTime);
+	position.x = Easing::EaseOutQuart(EaseStart.x, EaseEnd.x, maxTime, time.GetCurrentTimer());
 
-	position.z = Easing::EaseOutQuart(EaseStart.z, EaseEnd.z, maxTime, totalTime);
+	position.z = Easing::EaseOutQuart(EaseStart.z, EaseEnd.z, maxTime, time.GetCurrentTimer());
 }
 
 void BossBaseState::EasingRot(Vector3& position, const float maxTime, Player* player, Vector3 rot)
 {
 	angle = atan2f(Ppos.x - position.x, Ppos.z - position.z) * 57;
 
-	rot.y = Easing::EaseOutQuint(REaseStart.y, angle, maxTime, totalTime);
+	rot.y = Easing::EaseOutQuint(REaseStart.y, angle, maxTime, time.GetCurrentTimer());
 
 	weak_boss.lock()->SetRotation(rot);
 }
@@ -48,49 +43,6 @@ void BossBaseState::EasingRot(Vector3& position, const float maxTime, Player* pl
 void BossBaseState::EasingRolling(const float maxTime,Vector3 rot)
 {
 	angle = REaseStart.y + 360;
-	rot.y = Easing::EaseOutQuint(REaseStart.y, angle, maxTime, totalTime);
+	rot.y = Easing::EaseOutQuint(REaseStart.y, angle, maxTime, time.GetCurrentTimer());
 	weak_boss.lock()->SetRotation(rot);
-}
-
-void BossBaseState::TimerStart(Timer* time, bool* timerFlag)
-{
-	*timerFlag = !*timerFlag;
-
-	if (time == nullptr)
-	{
-		time = new Timer();
-	}
-	else
-	{
-		time->restart();
-	}
-}
-
-void BossBaseState::AdvanceTimer(const float maxTime)
-{
-	elapsedTime = time.elapsed();
-	totalTime += elapsedTime;
-	timeRate = min(totalTime / maxTime, 1.0f);
-}
-
-void BossBaseState::ResetTimer()
-{
-	timeRate = 0;
-	elapsedTime = 0;
-	totalTime = 0;
-	EaseStart = { 0,0,0 };
-	EaseEnd = { 0,0,0 };
-	timerFlag = !timerFlag;
-}
-
-bool BossBaseState::IsTimeOut(float TotalTime, const float Maxtime) const
-{
-	return TotalTime >= Maxtime;
-}
-
-bool BossBaseState::IsEasingOver() const
-{
-	const float EasingOver = 1.0f;//timeRate‚ª1‚É‚È‚é‚ÆEasingI—¹
-
-	return timeRate == EasingOver;
 }

@@ -31,6 +31,7 @@ public:
 
 	bool& ChangeCollisionFlag() { return collisionFlag = !collisionFlag; }
 
+	bool& GetCollisionFlag() { return collisionFlag; }
 private:
 	Input* input = Input::GetInstance();
 	bool collisionFlag;

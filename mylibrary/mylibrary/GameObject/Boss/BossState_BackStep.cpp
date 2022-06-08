@@ -4,22 +4,15 @@
 void BossState_BackStep::Initialize()
 {
 	step = BackStepStep::BackStepStart();
-	maxTime = 0.3f;//‘S‘ÌŠÔ[s]
-	timeRate = 0;;
-	elapsedTime = 0;
-	totalTime = 0;
-	angle = 0;
-	timerFlag = false;
-	Ppos = {};
-	EaseStart = {};
-	collisionFlag = false;
-	EaseEnd = {};
-	bai = 100.0f;
+	distance = 100.0f;
 	forwardVector = { 0,0,1 };
+	maxTime = 14.0f;
+	time.SetMaxTime(maxTime);
 }
 
 void BossState_BackStep::Update(Player* player, AttackEnemyCollisionObject* ememyCollision, SphereCollider* collider, AudioManager* audio)
 {
+	time.Update();
 	BackStep(player);
 	collider->Update();
 }
@@ -32,30 +25,22 @@ void BossState_BackStep::BackStep(Player* player)
 {
 	if (step == BackStepStep::BackStepStart)
 	{
-		bai = 100;
 		warldMat = weak_boss.lock()->GetMatWorld();
 		walrdPos = warldMat.transformNormal(forwardVector, warldMat);
-		walrdPos = { walrdPos.x * bai, 0 ,walrdPos.z * bai };
+		walrdPos = { walrdPos.x * distance, 0 ,walrdPos.z * distance };
 		
-		TimerStart(&time, &timerFlag);		
+		time.Reset();		
 		DecisionDistance(weak_boss.lock()->GetPosition().x - walrdPos.x, weak_boss.lock()->GetPosition().z - walrdPos.z);
-
 		step = BackStepStep::DuringBackStep;
 	}
 
-	if (timerFlag && step == BackStepStep::DuringBackStep)
+	if (time.IsTimer() && step == BackStepStep::DuringBackStep)
 	{
-		const float MoveFlame = 6.0f;
-		Vector3 post = weak_boss.lock()->GetPosition();
-		EasingMove(post, MoveFlame, player);
+		EasingMove(weak_boss.lock()->GetPosition(), maxTime, player);
 		weak_boss.lock()->GetPosition();
-		weak_boss.lock()->SetPosition(post);
-		AdvanceTimer(MoveFlame);
 
-		if (IsEasingOver())
+		if (time.IsTimeOut(maxTime))
 		{
-			bai = 100.0f;
-			ResetTimer();
 			weak_boss.lock()->ChangeState(std::make_shared<BossState_Wait>());
 		}
 	}

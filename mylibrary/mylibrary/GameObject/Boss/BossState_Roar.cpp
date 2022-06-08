@@ -6,23 +6,17 @@
 void BossState_Roar::Initialize()
 {
 	step = RoarStep::RoarStart;
-	bai = 0.0f;
+	distance = 0.0f;
 	maxTime = 0.3f;//‘S‘ÌŽžŠÔ[s]
-	timeRate = 0;;
-	elapsedTime = 0;
-	totalTime = 0;
-	angle = 0;
 	dotPos = 0;
-	timerFlag = false;
 	Ppos = {};
-	EaseStart = {};
-	collisionFlag = false;
-	EaseEnd = {};
 	forwardVector = { 0,0,1 };
+	time.SetMaxTime(15.0f);
 }
 
 void BossState_Roar::Update(Player* player, AttackEnemyCollisionObject* ememyCollision, SphereCollider* collider, AudioManager* audio)
 {
+	time.Update();
 	Roar(player,audio);
 	collider->Update();
 }
@@ -37,15 +31,13 @@ void BossState_Roar::Roar(Player* player, AudioManager* audio)
 	{
 		audio->PlayWave(L"Resources/sounds/Roar.wav");
 		weak_boss.lock()->PlayAnimation(2,1);
-		TimerStart(&time,&timerFlag);
+		time.Reset();
 		step = RoarStep::DuringRoarStart;
 	}
 
-	if (timerFlag && step == RoarStep::DuringRoarStart)
+	if (time.IsTimer() && step == RoarStep::DuringRoarStart)
 	{
-		AdvanceTimer(maxTime);
-
-		if (IsTimeOut(totalTime, 10.0f))
+		if (time.IsTimeOut(10.0f))
 		{
 			warldMat = weak_boss.lock()->GetMatWorld();
 			walrdPos = warldMat.transformNormal(forwardVector, warldMat);
@@ -62,15 +54,12 @@ void BossState_Roar::Roar(Player* player, AudioManager* audio)
 			dotPos = walrdPos.Dot(Ppos);
 			sa = player->GetPosition() - weak_boss.lock()->GetPosition();
 			step = RoarStep::DuringRoar;
-			ResetTimer();
-			TimerStart(&time, &timerFlag);
+			time.Reset();
 		}
 	}
 
-	if (timerFlag && step == RoarStep::DuringRoar)
+	if (time.IsTimer() && step == RoarStep::DuringRoar)
 	{
-		AdvanceTimer(maxTime);
-
 		if (sa.z < 0)
 		{
 			sa.z = sa.z * -1;
@@ -84,13 +73,9 @@ void BossState_Roar::Roar(Player* player, AudioManager* audio)
 			step = RoarStep::RoarEnd;
 		}
 
-		if (IsTimeOut(totalTime, 5.0f))
+		if (time.IsTimeOut(28.0f))
 		{
 			handle = EffekseerManager::StopEffect(handle);
-		}
-
-		if (IsTimeOut(totalTime, 10.0f))
-		{
 			weak_boss.lock()->ChangeRoarFlag();
 			step = RoarStep::RoarEnd;
 		}
@@ -98,8 +83,6 @@ void BossState_Roar::Roar(Player* player, AudioManager* audio)
 
 	if (step == RoarStep::RoarEnd)
 	{
-		ResetTimer();
-		weak_boss.lock()->ResetAnimation();
 		weak_boss.lock()->ChangeState(std::make_shared<BossState_Wait>());
 	}
 }

@@ -55,17 +55,16 @@ float FractalSumNoise(float density, float2 uv)
 
 float RayleighPhaseFunction(float fCos2)
 {
-	return 3.0f / (16.0f * 3.1435) * (1.0f + fCos2);
+	return 3.0f / (16.0f * 3.1415926535) * (1.0f + fCos2);
 }
 
 float MiePhaseFunction(float g, float fCos)
 {
-	return (1 - g) * (1 - g) / (4.0f * 3.1435 * pow(1 + g * g - 2.0f * g * fCos, 1.5f));
+	return (1 - g) * (1 - g) / (4.0f * 3.1415926535 * pow(1 + g*g - 2.0f*g*fCos, 1.5f));
 }
 
 float4 main(VSOutput input) : SV_TARGET
 {
-	 float4 texcolor = tex.Sample(smp,input.uv);
 	 ////定数フォグ
 	 float depth = tex0.Sample(smp, input.uv);
 	 //正規デバイス座標系での座標
@@ -76,33 +75,34 @@ float4 main(VSOutput input) : SV_TARGET
 	 viewPos.z /= viewPos.w;
 
 	 float fogWeight = 0.0f;
+	 //霧の濃さ
 	 float fog_Scale = 1.0f;
-	 //霧減数率
-	 float g = 0.04f;
+	 //霧減数率(カメラとの影響距離)
+	 //float g = 0.004f;
+	 float g = 0.02f;
+
 	 fogWeight += fog_Scale * max(0.0f, 1.0f - exp(-g * viewPos.z));
 	 float4 bgColor = tex.Sample(smp, input.uv);
 
+	 //ノイズの密度
 	 float density = 0.002f;
 	 float timeX =  Time.x;
 	 float timeY = Time.y;
 
 	 //右方向のベクトル
+	 float cos = 1.0f - viewPos.z;
 	 float toTheRight = FractalSumNoise(density, input.uv + float2(timeX, timeY));
-	 
-	 //右斜め下方向のベクトル
-	 float diagonallyDownwardToTheRight = FractalSumNoise(density, input.uv + float2(timeX, timeX));
-	
-	 float  noise = toTheRight + diagonallyDownwardToTheRight * fogWeight;
-	 
-	 float sunCos = -0.14f;
+	 float4 noise = float4(toTheRight, toTheRight, toTheRight, 1.0f);
+	 float4 sunCos = 2.0f;
+	 float valueG = -0.75f;
 	 const float betaPhaseR = RayleighPhaseFunction(sunCos * sunCos);
-	 const float betaPhaseM = MiePhaseFunction(-0.75, sunCos);
-	 float rayleighCoeff = 0.8f;
-	 float4 rayleighColor = float4(1, 0, 0, 1);
-	 float mieCoeff = 1.0f;
-	 float4 mieColor = float4(0, 0, 1, 1);
+	 const float betaPhaseM = MiePhaseFunction(valueG, sunCos);
+	 float rayleighCoeff = 0.025f;
+	 float4 rayleighColor = float4(1, 1, 1, 1);
+	 float mieCoeff = 0.025f;
+	 float4 mieColor = float4(1, 1, 1, 1);
 	 float4 fogColor = (betaPhaseR * rayleighCoeff * rayleighColor + betaPhaseM * mieCoeff * mieColor) / (rayleighCoeff + mieCoeff);
-
 	 float4 outputColor = lerp(bgColor, fogColor + noise, fogWeight);
+	
 	 return outputColor * FadeOut;
 }

@@ -7,6 +7,7 @@
 #include "../mylibrary/Input/Input.h"
 #include "../mylibrary/3d/EffekseerManager.h"
 #include "../mylibrary/Base/HelperTimer.h"
+#include "../mylibrary/Base/Timer.h"
 
 enum class PlayerStatepattern
 {
@@ -72,6 +73,7 @@ protected:
 	std::weak_ptr<Player> weak_player;
 	PlayerStatepattern statePattern;
 	
+	Timer timer;
 	Vector3 EasingPosition;
 	Vector3 moveDirection ;
 	Vector3 cameraDirectionZ;

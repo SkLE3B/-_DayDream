@@ -247,6 +247,7 @@
     <ClCompile Include="Base\FlameRate.cpp" />
     <ClCompile Include="Base\HelperTimer.cpp" />
     <ClCompile Include="Base\LevelLoader.cpp" />
+    <ClCompile Include="Base\Timer.cpp" />
     <ClCompile Include="Base\windowsApi.cpp" />
     <ClCompile Include="Camera\BackCamera.cpp" />
     <ClCompile Include="Camera\Camera.cpp" />

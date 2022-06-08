@@ -70,11 +70,11 @@ void AttackEnemyCollisionObject::Update(Boss* boss,Player* player, AudioManager*
 	// 球と地形の交差を全検索
 	CollisionManager::GetInstance()->QuerySphere(*sphereCollider, &callbackAttack, COLLISION_ATTR_ALLIES);
 
-	if (boss->GetRoarFlag() == false && callbackAttack.flag)
+	if (GetCollisionFlag() && callbackAttack.flag)
 	{
 		player->GetHp()->add(-50);
-		boss->ChangeRoarFlag();
-		player->ChangeState(std::make_shared<PlayerState_RoarKnockBack>());
+		ChangeCollisionFlag();
+		player->ChangeState(std::make_shared<PlayerState_KnockBack>());
 	}
 
 	// 行列の更新など
